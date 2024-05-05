@@ -1,0 +1,50 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy-main:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm 📦
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install & Build 🔧
+        run: |
+          pnpm i
+          pnpm run generate
+        env:
+          NUXT_PUBLIC_ENV: "production"
+
+      - name: Lint 🧹
+        run: |
+          pnpm run lint-fix
+
+      - name: Type Check 🔎
+        run: |
+          pnpm run lint-fix
+
+      - name: Deploy to Netlify Production 🚀
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: "./dist"
+          production-branch: "main"
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NUXT_PUBLIC_ENV: "production"
+          DATABASE_URL: "mongodb+srv://admin:admin@wenso-platform.7clk121.mongodb.net/wenso-platform?retryWrites=true&w=majority&appName=wenso-platform"
