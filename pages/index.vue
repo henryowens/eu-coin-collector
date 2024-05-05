@@ -42,13 +42,10 @@ const filteredCountries = computed(() =>
 provide("selectedCoins", selectedCoins);
 
 const { y } = useWindowScroll();
-
-const runtimeConfig = useRuntimeConfig();
 </script>
 
 <template>
   <div class="index__page">
-    <p>Env: {{ runtimeConfig.public.env }}</p>
     <Spinner
       v-if="isFetching"
       class="fade-in"
