@@ -37,7 +37,7 @@ jobs:
       - name: Deploy to Netlify Production 🚀
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: "./dist"
+          publish-dir: ".output/public"
           production-branch: "main"
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
@@ -47,4 +47,3 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NUXT_PUBLIC_ENV: "production"
-          DATABASE_URL: "mongodb+srv://admin:admin@wenso-platform.7clk121.mongodb.net/wenso-platform?retryWrites=true&w=majority&appName=wenso-platform"
