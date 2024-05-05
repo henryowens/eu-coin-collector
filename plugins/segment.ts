@@ -1,8 +1,6 @@
 import { AnalyticsBrowser } from "@segment/analytics-next";
 import axios from "axios";
 
-import type { IPApiResponse } from "~/models/tracking";
-
 const logError = () => {
   if (process.server) {
     console.warn("Segment is not available on the server side");
