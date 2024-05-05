@@ -14,4 +14,10 @@ export default defineNuxtConfig({
       env: process.env.NUXT_PUBLIC_ENV,
     },
   },
+  app: {
+    head: {
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+    },
+  },
 });
