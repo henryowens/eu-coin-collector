@@ -33,7 +33,10 @@ export default defineNuxtPlugin<{
   name: "segment",
   parallel: true,
   setup: (nuxtApp) => {
-    if (process.server) {
+    const {
+      public: { env },
+    } = useRuntimeConfig();
+    if (process.server || env === "local") {
       return nuxtApp.provide("segment", segmentMock);
     }
 
