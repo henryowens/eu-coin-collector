@@ -19,6 +19,10 @@ jobs:
         with:
           version: 8
 
+      - name: Clean up 🧹
+        run: |
+          rm -rf .nuxt .output dist pnpm-lock.yaml node_modules
+
       - name: Install & Build 🔧
         run: |
           pnpm i
@@ -26,18 +30,18 @@ jobs:
         env:
           NUXT_PUBLIC_ENV: "production"
 
-      - name: Lint 🧹
+      - name: Lint & Fix 🧹
         run: |
           pnpm run lint-fix
 
       - name: Type Check 🔎
         run: |
-          pnpm run lint-fix
+          pnpm run type-check
 
       - name: Deploy to Netlify Production 🚀
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: ".output/public"
+          publish-dir: ".e"
           production-branch: "main"
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
