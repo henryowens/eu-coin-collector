@@ -43,6 +43,7 @@ const isSelected = computed(
       :alt="`Image of a ${coin.value} coin from ${country?.name}`"
       width="90"
       height="90"
+      format="webp"
     />
   </div>
 </template>
