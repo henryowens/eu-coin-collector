@@ -43,12 +43,7 @@ export default defineNuxtPlugin<{
       writeKey: "26fJzg2RR0wEUS9VdcI15dpocAIeRbRF",
     });
 
-    // axios.get<IPApiResponse>("http://ip-api.com/json").then(({ data }) => {
-    //   if (data.status === "success")
-    segment.identify({
-      // ip: data.query,
-    });
-    // });
+    segment.identify({});
 
     segment.user().then((user) => {
       axios.defaults.headers.common["Anonymous-Id"] = user.anonymousId();
