@@ -99,6 +99,8 @@ const { y } = useWindowScroll();
 
 .index__page {
   @apply flex-1;
+  @apply flex;
+  @apply justify-center;
   hr {
     @apply border-gray-200;
   }
