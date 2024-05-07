@@ -1,7 +1,16 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/main.scss"],
-  modules: ["@nuxtjs/eslint-module", "nuxt-icon", "@nuxt/image"],
+  modules: [
+    "@nuxtjs/eslint-module",
+    "nuxt-icon",
+    [
+      "@nuxt/image",
+      {
+        provider: "netlify",
+      },
+    ],
+  ],
   ssr: true,
   postcss: {
     plugins: {

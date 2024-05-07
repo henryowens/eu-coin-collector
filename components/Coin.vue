@@ -38,7 +38,7 @@ const isSelected = computed(
       'coin-selected': isSelected,
     }"
   >
-    <NuxtImg
+    <img
       :src="imageUrl"
       :alt="`Image of a ${coin.value} coin from ${country?.name}`"
       width="90"
