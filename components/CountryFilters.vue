@@ -22,7 +22,7 @@ const onResetCountries = () => (selectedCountries.value = []);
 <template>
   <div class="filters">
     <div class="flex justify-between align-center mb-3">
-      <h2>Filter Countries</h2>
+      <h2>Include Countries</h2>
 
       <button
         class="btn__sm"
