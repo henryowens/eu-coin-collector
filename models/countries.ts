@@ -16,4 +16,4 @@ export interface Country {
 
 export type Countries = Country[];
 
-export type SelectedCountries = number[];
+export type FilterSelectedCountries = number[];

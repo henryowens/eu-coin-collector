@@ -9,6 +9,7 @@ const onClear = () => (selectedCoins.value = []);
     <header>
       <div>
         <Icon
+          class="my-1"
           name="circle-flags:eu"
           size="30"
         />
@@ -17,7 +18,14 @@ const onClear = () => (selectedCoins.value = []);
         <h1>EU Coin Collector</h1>
       </div>
       <div class="btns__conatiner">
-        <button @click="onClear">Clear</button>
+        <Transition name="fade">
+          <button
+            v-if="selectedCoins.length"
+            @click="onClear"
+          >
+            Clear Selected
+          </button>
+        </Transition>
       </div>
     </header>
     <main>

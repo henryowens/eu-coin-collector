@@ -19,7 +19,11 @@ button:hover {
 .btn__sm {
     @apply px-3;
     @apply text-xs;
+}
 
+.btn__xs {
+    @apply px-2 py-1;
+    @apply text-xs;
 }
 
 html,
@@ -27,4 +31,27 @@ body,
 main,
 div {
     scroll-behavior: smooth;
+}
+
+
+// vue transitions
+
+.fade-enter-active {
+    transition: all 0.2s ease-in;
+    opacity: 0;
+}
+
+.fade-leave-active {
+    transition: all 0.2s ease-out;
+    opacity: 1;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave {
+    opacity: 1;
 }

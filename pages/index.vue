@@ -9,7 +9,7 @@ const { data: countries, isFetching, isError, suspense } = useCountries();
 onServerPrefetch(async () => await suspense());
 
 const selectedCoins = useSelectedCoins();
-const selectedCountries = useSelectedCountries();
+const filterSelectedCountries = useFilterSelectedCountries();
 const { track } = useTracking();
 
 const onCoinClicked = (coin: Coin, set: CoinSet, country: Country) => {
@@ -34,9 +34,11 @@ const onCoinClicked = (coin: Coin, set: CoinSet, country: Country) => {
 };
 
 const filteredCountries = computed(() =>
-  !selectedCountries.value.length
+  !filterSelectedCountries.value.length
     ? countries.value
-    : countries.value?.filter(({ id }) => selectedCountries.value.includes(id)),
+    : countries.value?.filter(({ id }) =>
+        filterSelectedCountries.value.includes(id),
+      ),
 );
 
 provide("selectedCoins", selectedCoins);
@@ -58,13 +60,14 @@ const { y } = useWindowScroll();
     </p>
     <div
       v-else
-      class="fade-in"
+      class="fade-in w-full"
     >
       <BackToTopButton
         v-if="y > 250"
         class="fade-in"
       />
-      <CountryFilters v-model="selectedCountries" />
+      <!-- <CountryFilters v-model="filterSelectedCountries" /> -->
+      <Filter />
       <div class="index__page--countries__container">
         <TransitionGroup
           name="fade"
@@ -78,7 +81,7 @@ const { y } = useWindowScroll();
               v-bind="country"
               @coin-clicked="onCoinClicked($event.coin, $event.set, country)"
             />
-            <hr v-if="index + 1 !== selectedCountries.length" />
+            <hr v-if="index + 1 !== filterSelectedCountries.length" />
           </div>
         </TransitionGroup>
       </div>

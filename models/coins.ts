@@ -4,6 +4,8 @@ export interface Coin {
   image: string;
 }
 
+export type Coins = Coin[];
+
 export interface SelectedCoin {
   id: number;
   coinSetId: number;
