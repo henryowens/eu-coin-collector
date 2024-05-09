@@ -1,0 +1,23 @@
+button {
+    @apply bg-blue-600 text-white;
+    @apply font-bold;
+    @apply py-2 px-4;
+    @apply rounded;
+    @apply text-sm;
+    @apply transition-all;
+}
+
+button:hover {
+    @apply transition-all;
+    @apply bg-blue-700;
+}
+
+.btn__sm {
+    @apply px-3;
+    @apply text-xs;
+}
+
+.btn__xs {
+    @apply px-2 py-1;
+    @apply text-xs;
+}
