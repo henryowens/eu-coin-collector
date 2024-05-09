@@ -21,9 +21,11 @@ const onClear = () => (selectedCoins.value = []);
         <Transition name="fade">
           <button
             v-if="selectedCoins.length"
+            class="flex gap-1"
             @click="onClear"
           >
-            Clear Selected
+            Clear
+            <span class="sm:flex hidden">Selected</span>
           </button>
         </Transition>
       </div>

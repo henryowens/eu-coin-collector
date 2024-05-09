@@ -30,7 +30,7 @@ const onCoinClicked = (id: number) => {
 
 <template>
   <div class="filters">
-    <h3 class="filters--title">Filters</h3>
+    <h3>Filters</h3>
     <FilterSection
       icon="ion:earth-outline"
       title="Countries"
@@ -43,7 +43,9 @@ const onCoinClicked = (id: number) => {
           :key="index"
           class="filters--countries__content--country"
           :class="
-            filterSelectedCountries.includes(id) ? 'bg-gray-300' : 'bg-gray-100'
+            filterSelectedCountries.includes(id)
+              ? 'bg-gray-300'
+              : 'bg-transparent'
           "
           @click="() => onCountryClicked(id)"
         >
@@ -84,12 +86,8 @@ const onCoinClicked = (id: number) => {
 .filters {
   @apply max-w-[950px];
   @apply m-auto;
+  @apply w-full;
   @apply flex flex-col gap-2;
-  &--title {
-    @apply text-sm;
-    @apply font-bold;
-    @apply text-gray-600;
-  }
   &--countries__content {
     @apply flex;
     @apply gap-1;

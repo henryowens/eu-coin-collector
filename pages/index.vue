@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core";
 
+import ProgressBar from "~/components/core/ProgressBar.vue";
 import type { Coin } from "~/models/coins";
 import type { CoinSet, Country } from "~/models/countries";
 
@@ -44,6 +45,20 @@ const filteredCountries = computed(() =>
 provide("selectedCoins", selectedCoins);
 
 const { y } = useWindowScroll();
+
+const totalCoins = computed(
+  () =>
+    countries.value?.reduce(
+      (acc, country) =>
+        acc +
+        country.coinSet.reduce((acc, coinSet) => acc + coinSet.coins.length, 0),
+      0,
+    ) ?? 0,
+);
+
+const percentageCollected = computed(
+  () => (selectedCoins.value.length / totalCoins.value) * 100,
+);
 </script>
 
 <template>
@@ -66,8 +81,10 @@ const { y } = useWindowScroll();
         v-if="y > 250"
         class="fade-in"
       />
-      <!-- <CountryFilters v-model="filterSelectedCountries" /> -->
-      <Filter />
+      <div class="flex flex-col gap-4">
+        <ProgressBar :progress="percentageCollected" />
+        <Filter />
+      </div>
       <div class="index__page--countries__container">
         <TransitionGroup
           name="fade"
