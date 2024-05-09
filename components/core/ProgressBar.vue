@@ -1,21 +1,40 @@
 <script lang="ts" setup>
+import { ContentLoader } from "vue-content-loader";
+
 defineProps<{
   progress: number;
+  isLoading?: boolean;
 }>();
 </script>
 
 <template>
   <div class="progress__bar">
     <h3>Collected</h3>
-    <div class="progress__bar--bar">
-      <div
-        class="progress__bar--bar--progress"
-        :style="{ maxWidth: `${progress}%` }"
+
+    <Transition
+      name="fade"
+      mode="out-in"
+      :delay="200"
+    >
+      <ContentLoader
+        v-if="isLoading"
+        :height="8"
+        width="100%"
+        class="progress__bar--loader"
       />
-      <p class="progress__bar--bar--progress__bubble">
-        {{ Math.round(progress) }}%
-      </p>
-    </div>
+      <div
+        v-else
+        class="progress__bar--bar"
+      >
+        <div
+          class="progress__bar--bar--progress"
+          :style="{ maxWidth: `${progress}%` }"
+        />
+        <p class="progress__bar--bar--progress__bubble">
+          {{ Math.round(progress) }}%
+        </p>
+      </div>
+    </Transition>
   </div>
 </template>
 

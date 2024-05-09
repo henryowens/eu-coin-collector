@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core";
+import { ContentLoader } from "vue-content-loader";
 
 import ProgressBar from "~/components/core/ProgressBar.vue";
 import type { Coin } from "~/models/coins";
 import type { CoinSet, Country } from "~/models/countries";
 
-const { data: countries, isFetching, isError, suspense } = useCountries();
+const { data: countries, isFetching, suspense } = useCountries();
 
 onServerPrefetch(async () => await suspense());
 
@@ -63,30 +64,48 @@ const percentageCollected = computed(
 
 <template>
   <div class="index__page">
-    <Spinner
-      v-if="isFetching"
-      class="fade-in"
-    />
-    <p
-      v-else-if="!countries?.length || isError"
-      class="fade-in"
-    >
-      There was an issue loading the site.
-    </p>
-    <div
-      v-else
-      class="fade-in w-full"
-    >
+    <div class="fade-in w-full">
       <BackToTopButton
         v-if="y > 250"
         class="fade-in"
       />
       <div class="flex flex-col gap-4">
-        <ProgressBar :progress="percentageCollected" />
+        <ProgressBar
+          :progress="percentageCollected"
+          :is-loading="isFetching"
+        />
         <Filter />
       </div>
-      <div class="index__page--countries__container">
+
+      <Transition
+        name="fade"
+        class="index__page--countries__container"
+        mode="out-in"
+      >
+        <div
+          v-if="isFetching"
+          class="overflow-hidden m-auto max-w-[850px]"
+        >
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="country__loader p-6"
+          >
+            <ContentLoader
+              :width="90"
+              :height="28"
+              class="mb-4"
+            />
+            <ContentLoader
+              width="100%"
+              :height="232"
+              class="mb-4"
+            />
+          </div>
+        </div>
+
         <TransitionGroup
+          v-else
           name="fade"
           tag="div"
         >
@@ -101,7 +120,7 @@ const percentageCollected = computed(
             <hr v-if="index + 1 !== filterSelectedCountries.length" />
           </div>
         </TransitionGroup>
-      </div>
+      </Transition>
     </div>
   </div>
 </template>

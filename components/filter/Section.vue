@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { ContentLoader } from "vue-content-loader";
+
 defineProps<{
   icon: string;
   title: string;
   showClearButton: boolean;
+  isLoading?: boolean;
 }>();
 
 defineEmits<{
@@ -15,58 +18,72 @@ const isCollapsed = defineModel<boolean>({
 </script>
 
 <template>
-  <div class="filters__section">
-    <div class="filters__section--header">
-      <div class="filters__section--header--title">
-        <Icon :name="icon" />
-        <h2>{{ title }}</h2>
-      </div>
+  <Transition
+    name="fade"
+    mode="out-in"
+    :delay="200"
+  >
+    <ContentLoader
+      v-if="isLoading"
+      :height="56"
+      width="100%"
+    />
+    <div
+      v-else
+      class="filters__section"
+    >
+      <div class="filters__section--header">
+        <div class="filters__section--header--title">
+          <Icon :name="icon" />
+          <h2>{{ title }}</h2>
+        </div>
 
-      <div class="filters__section--header--options">
-        <Transition name="fade">
-          <button
-            v-if="showClearButton"
-            class="btn__xs"
-            @click="$emit('clear')"
-          >
-            Clear
-          </button>
-        </Transition>
-
-        <div
-          class="filters__section--header--options--collapse__button"
-          @click="() => (isCollapsed = !isCollapsed)"
-        >
-          <Transition
-            name="fade"
-            mode="out-in"
-            :delay="100"
-          >
-            <Icon
-              v-if="isCollapsed"
-              key="chevron-down"
-              name="ion:chevron-down-outline"
-            />
-            <Icon
-              v-else
-              key="chevron-up"
-              name="ion:chevron-up-outline"
-            />
+        <div class="filters__section--header--options">
+          <Transition name="fade">
+            <button
+              v-if="showClearButton"
+              class="btn__xs"
+              @click="$emit('clear')"
+            >
+              Clear
+            </button>
           </Transition>
+
+          <div
+            class="filters__section--header--options--collapse__button"
+            @click="() => (isCollapsed = !isCollapsed)"
+          >
+            <Transition
+              name="fade"
+              mode="out-in"
+              :delay="100"
+            >
+              <Icon
+                v-if="isCollapsed"
+                key="chevron-down"
+                name="ion:chevron-down-outline"
+              />
+              <Icon
+                v-else
+                key="chevron-up"
+                name="ion:chevron-up-outline"
+              />
+            </Transition>
+          </div>
         </div>
       </div>
+      <Transition name="grow">
+        <div
+          v-if="!isCollapsed"
+          class="filters__section--flag__container"
+        >
+          <div class="mt-6">
+            <slot />
+          </div>
+        </div>
+      </Transition>
     </div>
-    <Transition name="grow">
-      <div
-        v-if="!isCollapsed"
-        class="filters__section--flag__container"
-      >
-        <div class="mt-6">
-          <slot />
-        </div>
-      </div>
-    </Transition>
-  </div>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>

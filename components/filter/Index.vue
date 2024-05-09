@@ -2,8 +2,16 @@
 const filterSelectedCountries = useFilterSelectedCountries();
 const filterSelectedCoins = useFilterSelectedCoins();
 
-const { data: countries, suspense: suspenseCountries } = useCountries();
-const { data: coins, suspense: suspenseCoins } = useCoins();
+const {
+  data: countries,
+  suspense: suspenseCountries,
+  isFetching: isCountriesFetching,
+} = useCountries();
+const {
+  data: coins,
+  suspense: suspenseCoins,
+  isFetching: isCoinsFetching,
+} = useCoins();
 
 onServerPrefetch(
   async () => await Promise.all([suspenseCountries(), suspenseCoins()]),
@@ -35,6 +43,7 @@ const onCoinClicked = (id: number) => {
       icon="ion:earth-outline"
       title="Countries"
       :show-clear-button="filterSelectedCountries.length > 0"
+      :is-loading="isCountriesFetching"
       @clear="filterSelectedCountries = []"
     >
       <div class="filters--countries__content">
@@ -58,6 +67,7 @@ const onCoinClicked = (id: number) => {
       icon="ion:logo-euro"
       title="Coins"
       :show-clear-button="filterSelectedCoins.length > 0"
+      :is-loading="isCoinsFetching"
       @clear="filterSelectedCoins = []"
     >
       <div class="filters--countries__content">
