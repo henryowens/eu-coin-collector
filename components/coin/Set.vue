@@ -23,12 +23,12 @@ const filteredCoins = computed(() =>
     v-if="filteredCoins.length"
     class="coin__set"
   >
-    <h3
+    <h2
       v-if="title"
       class="coin__set--title"
     >
       {{ title }}
-    </h3>
+    </h2>
 
     <TransitionGroup
       name="fade"

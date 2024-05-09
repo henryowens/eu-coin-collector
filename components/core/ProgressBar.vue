@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <div class="progress__bar">
-    <h3>Collected</h3>
+    <h2 class="heading__sm">Collected</h2>
 
     <Transition
       name="fade"

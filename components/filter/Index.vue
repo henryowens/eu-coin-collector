@@ -38,7 +38,7 @@ const onCoinClicked = (id: number) => {
 
 <template>
   <div class="filters">
-    <h3>Filters</h3>
+    <h2 class="heading__sm">Filters</h2>
     <FilterSection
       icon="ion:earth-outline"
       title="Countries"
