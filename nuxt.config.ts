@@ -1,3 +1,5 @@
+import { gtag, image } from "./config";
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/styles/index.scss"],
@@ -5,12 +7,8 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/eslint-module",
     "nuxt-icon",
-    [
-      "@nuxt/image",
-      {
-        provider: "netlify",
-      },
-    ],
+    ["@nuxt/image", image],
+    ["nuxt-gtag", gtag],
   ],
   ssr: true,
   postcss: {

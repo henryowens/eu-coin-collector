@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const selectedCoins = useSelectedCoins();
+const { selectedCoins } = useSelectedCoins();
 
 const onClear = () => (selectedCoins.value = []);
 </script>

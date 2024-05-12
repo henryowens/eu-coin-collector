@@ -12,6 +12,30 @@ button:hover {
     @apply bg-blue-700;
 }
 
+.btn__danger {
+    @apply bg-red-600 text-white;
+
+    &:hover {
+        @apply bg-red-700;
+    }
+}
+
+.btn__success {
+    @apply bg-green-600 text-white;
+
+    &:hover {
+        @apply bg-green-700;
+    }
+}
+
+.btn__warning {
+    @apply bg-yellow-600 text-white;
+
+    &:hover {
+        @apply bg-yellow-700;
+    }
+}
+
 .btn__sm {
     @apply px-3;
     @apply text-xs;
