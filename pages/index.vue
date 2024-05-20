@@ -10,7 +10,7 @@ const { data: countries, isFetching, suspense } = useCountries();
 
 onServerPrefetch(async () => await suspense());
 
-const selectedCoins = useSelectedCoins();
+const { selectedCoins } = useSelectedCoins();
 const filterSelectedCountries = useFilterSelectedCountries();
 const { track } = useTracking();
 
