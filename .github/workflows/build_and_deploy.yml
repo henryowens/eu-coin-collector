@@ -26,7 +26,7 @@ jobs:
       - name: Install & Build 🔧
         run: |
           pnpm i
-          pnpm run build
+          pnpm run generate
         env:
           NUXT_PUBLIC_ENV: "production"
 
