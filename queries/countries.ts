@@ -1,13 +1,13 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import axios from "axios";
 
-import type { Countries } from "~/models/countries";
+import type { CountriesResponse } from "~/models/api";
 
 export default createQueryKeys("countries", {
   list: () => ({
     queryKey: ["list"],
     queryFn: async () => {
-      const repsonse = await axios.get<Countries>("/api/countries.json");
+      const repsonse = await axios.get<CountriesResponse>("/api/countries");
 
       return repsonse.data;
     },

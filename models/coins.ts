@@ -1,7 +1,7 @@
 export interface Coin {
   value: number;
   name: string;
-  image: string;
+  image?: string;
 }
 
 export type Coins = Coin[];
