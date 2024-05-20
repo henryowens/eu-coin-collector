@@ -1,4 +1,4 @@
-import { CountriesResponse } from "~/models/api";
+import type { CountriesResponse } from "~/models/api";
 
 export default defineEventHandler(
   () =>

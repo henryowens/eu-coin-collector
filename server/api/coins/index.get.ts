@@ -1,4 +1,4 @@
-import { CoinsResponse } from "~/models/api";
+import type { CoinsResponse } from "~/models/api";
 
 export default defineEventHandler(
   () =>
