@@ -56,6 +56,8 @@ const filteredCoins = computed(() =>
   &--coins {
     @apply flex;
     @apply flex-wrap;
+    @apply items-center;
+    @apply justify-center;
   }
 }
 

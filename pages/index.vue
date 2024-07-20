@@ -84,7 +84,7 @@ const percentageCollected = computed(
       >
         <div
           v-if="isFetching"
-          class="overflow-hidden m-auto max-w-[850px]"
+          class="overflow-hidden m-auto max-w-[950px]"
         >
           <div
             v-for="i in 3"
@@ -98,7 +98,7 @@ const percentageCollected = computed(
             />
             <ContentLoader
               width="100%"
-              :height="232"
+              :height="132"
               class="mb-4"
             />
           </div>
@@ -149,7 +149,7 @@ const percentageCollected = computed(
   }
   &--countries__container {
     @apply m-auto;
-    max-width: 850px;
+    max-width: 950px;
   }
 }
 
