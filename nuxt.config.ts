@@ -9,8 +9,9 @@ export default defineNuxtConfig({
     "nuxt-icon",
     ["@nuxt/image", image],
     ["nuxt-gtag", gtag],
+    "@tresjs/nuxt",
   ],
-  ssr: true,
+  ssr: false,
   postcss: {
     plugins: {
       tailwindcss: {},

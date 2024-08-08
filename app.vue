@@ -21,8 +21,32 @@ useHead({
 </script>
 
 <template>
-  <NuxtLayout>
+  <!-- <NuxtLayout>
     <NuxtPage />
     <CookieConsent />
-  </NuxtLayout>
+  </NuxtLayout> -->
+
+  <TresCanvas
+    clear-color="#82DBC5"
+    shadows
+    alpha
+    class="!w-screen !h-screen"
+  >
+    <!-- <TresPerspectiveCamera :position="[13, 11, 11]" /> -->
+    <TresCamera />
+    <OrbitControls
+      :auto-rotate="true"
+      :auto-rotate-speed="0.5"
+      :enable-rotate="false"
+      :enable-zoom="false"
+    />
+    <Suspense>
+      <Model />
+    </Suspense>
+    <!-- <TresLight /> -->
+    <TresDirectionalLight
+      :position="[-4, 8, 4]"
+      :intensity="10"
+    />
+  </TresCanvas>
 </template>

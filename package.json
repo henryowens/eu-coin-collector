@@ -17,11 +17,15 @@
     "@nuxt/image": "^1.7.0",
     "@segment/analytics-next": "^1.69.0",
     "@tanstack/vue-query": "^5.35.1",
+    "@tresjs/cientos": "^3.9.0",
+    "@tresjs/core": "^4.2.5",
+    "@tresjs/nuxt": "^3.0.2",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
     "compass": "^0.1.1",
     "nuxt": "^3.11.2",
     "nuxt-icon": "^0.6.10",
+    "three": "^0.167.1",
     "vue": "^3.4.27",
     "vue-content-loader": "^2.0.1",
     "vue-router": "^4.3.2"
@@ -29,6 +33,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
+    "@types/three": "^0.167.1",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "autoprefixer": "^10.4.19",
