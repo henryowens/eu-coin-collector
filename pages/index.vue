@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { useWindowScroll } from "@vueuse/core";
+import {
+  directiveHooks,
+  useElementBounding,
+  useWindowScroll,
+} from "@vueuse/core";
 import { ContentLoader } from "vue-content-loader";
 
 import ProgressBar from "~/components/core/ProgressBar.vue";
@@ -60,21 +64,91 @@ const totalCoins = computed(
 const percentageCollected = computed(
   () => (selectedCoins.value.length / totalCoins.value) * 100,
 );
+
+const showMenubar = computed(
+  () => (progressBar.value?.clientHeight ?? 0) - 24 + ypos.value < 0,
+);
+
+const progressBar = ref<HTMLDivElement | null>(null);
+const { y: ypos } = useElementBounding(progressBar);
 </script>
 
 <template>
   <div class="index__page">
+    <Transition name="fade">
+      <div
+        v-if="showMenubar"
+        class="fixed p-2 bg-gray-700 opacity-95 w-full top-0 left-0 z-50"
+      >
+        <div class="flex items-center gap-2 justify-between">
+          <ProgressBar
+            :show-title="false"
+            :progress="percentageCollected"
+            :is-loading="isFetching"
+          />
+          <div class="flex gap-2">
+            <button
+              popovertarget="filters"
+              class="index__page--header--options--item"
+            >
+              <Icon
+                size="15"
+                name="codicon:filter-filled"
+              />
+            </button>
+
+            <button
+              popovertarget="confirmReset"
+              class="index__page--header--options--item"
+            >
+              <Icon
+                size="15"
+                name="codicon:debug-restart"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
     <div class="fade-in w-full">
       <BackToTopButton
         v-if="y > 250"
         class="fade-in"
       />
-      <div class="flex flex-col gap-4">
+
+      <div class="index__page--header">
+        <h1 class="heading__xl">My Collection</h1>
+        <div class="index__page--header--options">
+          <button
+            popovertarget="filters"
+            class="index__page--header--options--item"
+          >
+            <Icon
+              size="15"
+              name="codicon:filter-filled"
+            />
+          </button>
+
+          <button
+            popovertarget="confirmReset"
+            class="index__page--header--options--item"
+          >
+            <Icon
+              size="15"
+              name="codicon:debug-restart"
+            />
+          </button>
+        </div>
+      </div>
+      <div
+        ref="progressBar"
+        class="flex flex-col gap-4"
+      >
         <ProgressBar
           :progress="percentageCollected"
           :is-loading="isFetching"
         />
-        <Filter />
       </div>
 
       <Transition
@@ -115,6 +189,7 @@ const percentageCollected = computed(
           >
             <Country
               v-bind="country"
+              :is-initial-collapsed="index !== 0"
               @coin-clicked="onCoinClicked($event.coin, $event.set, country)"
             />
             <hr v-if="index + 1 !== filterSelectedCountries.length" />
@@ -150,6 +225,24 @@ const percentageCollected = computed(
   &--countries__container {
     @apply m-auto;
     max-width: 950px;
+  }
+
+  &--header {
+    @apply flex items-start justify-between;
+    @apply max-w-[950px] m-auto;
+    &--options {
+      @apply flex gap-2;
+      @apply items-center;
+      &--item {
+        @apply cursor-pointer;
+        @apply transition-all;
+        @apply p-1 rounded;
+        @apply w-[30px] h-[30px];
+        @apply flex items-center justify-center;
+        @apply text-gray-500 hover:text-gray-600;
+        @apply bg-gray-50 hover:bg-gray-100;
+      }
+    }
   }
 }
 

@@ -1,15 +1,33 @@
 <script lang="ts" setup>
 import { ContentLoader } from "vue-content-loader";
 
-defineProps<{
-  progress: number;
-  isLoading?: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    showTitle?: boolean;
+    progress: number;
+    isLoading?: boolean;
+    showAmount?: boolean;
+  }>(),
+  {
+    showTitle: true,
+    showAmount: false,
+  },
+);
 </script>
 
 <template>
-  <div class="progress__bar">
-    <h2 class="heading__sm">Collected</h2>
+  <div
+    class="progress__bar"
+    :class="{
+      '!m-0': !showTitle,
+    }"
+  >
+    <h2
+      v-if="showTitle"
+      class="heading__sm"
+    >
+      Progress
+    </h2>
 
     <Transition
       name="fade"
@@ -27,12 +45,14 @@ defineProps<{
         class="progress__bar--bar"
       >
         <div
+          v-if="showAmount"
           class="progress__bar--bar--progress"
           :style="{ maxWidth: `${progress}%` }"
-        />
-        <p class="progress__bar--bar--progress__bubble">
-          {{ Math.round(progress) }}%
-        </p>
+        >
+          <p class="progress__bar--bar--progress__bubble">
+            {{ Math.round(progress) }}%
+          </p>
+        </div>
       </div>
     </Transition>
   </div>
@@ -44,9 +64,8 @@ defineProps<{
   @apply m-auto;
   @apply flex flex-col gap-2;
   @apply w-full;
-
+  @apply mb-6;
   &--bar {
-    @apply relative;
     @apply h-2;
     @apply bg-gray-200;
     @apply rounded-full;
@@ -56,22 +75,23 @@ defineProps<{
       @apply w-full;
       @apply transition-all;
       @apply bg-blue-500;
+      @apply relative;
     }
     &--progress__bubble {
       @apply absolute;
-      width: 30px;
-      height: 30px;
+      // width: 20px;
+      // height: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      top: -11px;
-      left: calc(50% - 15px);
-      @apply bg-gray-800;
-      @apply bg-opacity-60;
+      top: -7px;
+      left: calc(100% - 10px);
+      @apply bg-blue-900;
+      // @apply bg-opacity-60;
       @apply text-white;
       @apply rounded-full;
       @apply p-1;
-      @apply text-xs;
+      @apply text-[10px];
     }
   }
 }

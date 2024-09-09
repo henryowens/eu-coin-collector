@@ -1,3 +1,4 @@
+.button,
 button {
     @apply bg-blue-600 text-white;
     @apply font-bold;
@@ -5,11 +6,21 @@ button {
     @apply rounded;
     @apply text-sm;
     @apply transition-all;
+    @apply flex items-center justify-center;
 }
 
+.button,
 button:hover {
     @apply transition-all;
     @apply bg-blue-700;
+}
+
+.btn__outline {
+    @apply bg-white border border-blue-600 text-blue-600;
+
+    &:hover {
+        @apply bg-blue-600 text-white;
+    }
 }
 
 .btn__danger {

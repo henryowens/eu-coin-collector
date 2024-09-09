@@ -2,14 +2,21 @@
 import type { Coin } from "~/models/coins";
 import type { CoinSet, Country } from "~/models/countries";
 
-const props = defineProps<Country>();
+const props = withDefaults(
+  defineProps<Country & { isInitialCollapsed?: boolean }>(),
+  {
+    isInitialCollapsed: true,
+  },
+);
 defineEmits<{
   (e: "coin-clicked", event: { coin: Coin; set: CoinSet }): void;
 }>();
 
 provide("country", props);
 
-const isCollapsed = ref(false);
+const isInitialCollapsed = computed(() => props.isInitialCollapsed);
+
+const isCollapsed = ref(isInitialCollapsed.value);
 </script>
 
 <template>
@@ -60,11 +67,15 @@ const isCollapsed = ref(false);
 
 <style scoped lang="scss">
 .country {
-  @apply p-6;
   height: auto;
   overflow: hidden;
+  @apply p-4;
+  @apply bg-slate-50;
+  @apply rounded-lg;
+  @apply my-4;
   &--title {
     @apply flex justify-between items-center;
+    @apply px-2;
     h2 {
       @apply text-xl;
       @apply text-gray-800;

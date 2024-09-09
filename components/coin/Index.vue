@@ -45,8 +45,6 @@ const isSelected = computed(
     <img
       :src="imageUrl"
       :alt="`Image of a ${coin.value} coin from ${country?.name}`"
-      width="90"
-      height="90"
       @load="() => (isLoading = false)"
     />
     <Transition name="fade">
@@ -63,7 +61,7 @@ const isSelected = computed(
 <style scoped lang="scss">
 .coin {
   @apply cursor-pointer;
-  @apply h-[100px] w-[100px];
+  @apply sm:h-[100px] sm:w-[100px] h-[110px] w-[110px];
   @apply flex items-center justify-center;
   @apply relative;
   &--loader {
@@ -72,7 +70,7 @@ const isSelected = computed(
   }
 
   img {
-    @apply h-[75px] w-[75px];
+    @apply sm:w-[75px] sm:h-[75px] h-[95px] w-[95px];
     @apply rounded-full;
     @apply outline;
     @apply outline-4;
@@ -84,11 +82,14 @@ const isSelected = computed(
       @apply outline-8;
     }
   }
+  filter: brightness(0.75);
 }
 .coin-selected {
   img {
     @apply transition-all;
+
     @apply outline-green-600;
   }
+  filter: brightness(1);
 }
 </style>

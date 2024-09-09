@@ -52,18 +52,14 @@ const filteredCoins = computed(() =>
     @apply text-sm;
     @apply font-bold;
     @apply text-gray-700;
+    @apply px-2;
   }
   &--coins {
     @apply flex;
     @apply flex-wrap;
     @apply items-center;
-    @apply justify-center;
+    @apply sm:justify-center justify-around;
+    @apply sm:gap-0 gap-3;
   }
-}
-
-.coin__set {
-  @apply p-4;
-  @apply bg-slate-50;
-  @apply rounded-lg;
 }
 </style>

@@ -3,3 +3,16 @@
     @apply font-bold;
     @apply text-gray-600;
 }
+
+
+
+.heading__lg {
+    @apply text-xl sm:text-lg;
+    @apply tracking-wide;
+}
+
+.heading__xl {
+    @apply text-3xl sm:text-2xl;
+    @apply tracking-wider;
+    @apply mb-6;
+}
