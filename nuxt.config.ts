@@ -9,8 +9,9 @@ export default defineNuxtConfig({
     "nuxt-icon",
     ["@nuxt/image", image],
     ["nuxt-gtag", gtag],
+    "@nuxtjs/google-fonts",
   ],
-  ssr: true,
+  ssr: false,
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -20,6 +21,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       env: process.env.NUXT_PUBLIC_ENV,
+    },
+  },
+
+  googleFonts: {
+    families: {
+      Nunito: [400, 700],
+      "Fira Code": [400],
     },
   },
   app: {

@@ -57,7 +57,8 @@ const filteredCoins = computed(() =>
     @apply flex;
     @apply flex-wrap;
     @apply items-center;
-    @apply justify-center;
+    @apply justify-start;
+    @apply gap-4;
   }
 }
 

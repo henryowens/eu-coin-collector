@@ -36,8 +36,9 @@ const isSelected = computed(
 </script>
 
 <template>
-  <div
+  <button
     class="coin"
+    :aria-label="`Select ${props.coin.value} coin from ${country?.name}`"
     :class="{
       'coin-selected': isSelected,
     }"
@@ -57,15 +58,18 @@ const isSelected = computed(
         class="coin--loader"
       />
     </Transition>
-  </div>
+  </button>
 </template>
 
 <style scoped lang="scss">
 .coin {
   @apply cursor-pointer;
-  @apply h-[100px] w-[100px];
+  @apply h-[90px] w-[90px];
   @apply flex items-center justify-center;
   @apply relative;
+  @apply p-0;
+  @apply bg-transparent;
+
   &--loader {
     @apply absolute;
     @apply rounded-full;

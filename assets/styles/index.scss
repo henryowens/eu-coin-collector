@@ -3,3 +3,8 @@
 @import './buttons.scss';
 @import './global.scss';
 @import './typeography.scss';
+
+.max-content-width {
+    @apply mx-auto;
+    @apply max-w-7xl;
+}
