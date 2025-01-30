@@ -12,6 +12,11 @@ export interface Country {
   flag: string;
   normalizedName: string;
   coinSet: CoinSet[];
+  locale: string;
+  colorScheme: {
+    background: string;
+    backgroundText: "light" | "dark";
+  };
 }
 
 export type Countries = Country[];

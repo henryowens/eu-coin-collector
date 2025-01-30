@@ -7,17 +7,16 @@ import type { CoinSet, Country } from "~/models/countries";
 const props = defineProps<{
   coin: Coin;
   set: CoinSet;
+  country: Country;
 }>();
 
-const country = inject<Country>("country");
-
-const selectedCoins = inject<Ref<SelectedCoins>>("selectedCoins");
+const { selectedCoins } = useSelectedCoins();
 
 const isLoading = ref(true);
 
 const imageUrl = computed(
   () =>
-    `/assets/coins/${country?.normalizedName.toLowerCase()}/${props.set.title ? `${props.set.title.toLowerCase().replaceAll(" ", "_")}-` : ""}${props.coin.name.toLowerCase().replaceAll(" ", "_")}.png`,
+    `/assets/coins/${props.country.normalizedName.toLowerCase()}/${props.set.title ? `${props.set.title.toLowerCase().replaceAll(" ", "_")}-` : ""}${props.coin.name.toLowerCase().replaceAll(" ", "_")}.png`
 );
 
 const isSelected = computed(
@@ -28,10 +27,10 @@ const isSelected = computed(
         coinSetId: selectedCoinSetId,
         value: selectedValue,
       }) =>
-        selectedId === country?.id &&
+        selectedId === props.country.id &&
         selectedCoinSetId === props.set.id &&
-        selectedValue === props.coin.value,
-    ),
+        selectedValue === props.coin.value
+    )
 );
 </script>
 
@@ -86,9 +85,18 @@ const isSelected = computed(
   }
 }
 .coin-selected {
+  @apply items-center;
   img {
     @apply transition-all;
+    @apply relative;
     @apply outline-green-600;
+  }
+  &::after {
+    content: "";
+    @apply rounded-full h-[75px] w-[75px];
+    @apply bg-green-600;
+    @apply opacity-30;
+    @apply absolute z-10;
   }
 }
 </style>

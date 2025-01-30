@@ -6,8 +6,13 @@ export default defineEventHandler(
       {
         id: 1,
         name: "Austria",
+        locale: "at",
         flag: "🇦🇹",
         normalizedName: "austria",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -51,8 +56,13 @@ export default defineEventHandler(
       {
         id: 2,
         name: "Belgium",
+        locale: "be",
         flag: "🇧🇪",
         normalizedName: "belgium",
+        colorScheme: {
+          background: "#FECA00",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -221,8 +231,13 @@ export default defineEventHandler(
       {
         id: 3,
         name: "Cyprus",
+        locale: "cy",
         flag: "🇨🇾",
         normalizedName: "cyprus",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -282,8 +297,13 @@ export default defineEventHandler(
       {
         id: 4,
         name: "Estonia",
+        locale: "ee",
         flag: "🇪🇪",
         normalizedName: "estonia",
+        colorScheme: {
+          background: "#272727",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -343,8 +363,13 @@ export default defineEventHandler(
       {
         id: 5,
         name: "Finland",
+        locale: "fi",
         flag: "🇫🇮",
         normalizedName: "finland",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -404,8 +429,13 @@ export default defineEventHandler(
       {
         id: 6,
         name: "France",
+        locale: "fr",
         flag: "🇫🇷",
         normalizedName: "france",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -465,8 +495,13 @@ export default defineEventHandler(
       {
         id: 7,
         name: "Germany",
+        locale: "de",
         flag: "🇩🇪",
         normalizedName: "germany",
+        colorScheme: {
+          background: "#E31D1C",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -526,8 +561,13 @@ export default defineEventHandler(
       {
         id: 8,
         name: "Greece",
+        locale: "gr",
         flag: "🇬🇷",
         normalizedName: "greece",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -587,8 +627,13 @@ export default defineEventHandler(
       {
         id: 9,
         name: "Ireland",
+        locale: "ie",
         flag: "🇮🇪",
         normalizedName: "ireland",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -648,8 +693,13 @@ export default defineEventHandler(
       {
         id: 10,
         name: "Italy",
+        locale: "it",
         flag: "🇮🇹",
         normalizedName: "italy",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -709,8 +759,13 @@ export default defineEventHandler(
       {
         id: 11,
         name: "Latvia",
+        locale: "lv",
         flag: "🇱🇻",
         normalizedName: "latvia",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -770,8 +825,13 @@ export default defineEventHandler(
       {
         id: 12,
         name: "Lithuania",
+        locale: "lt",
         flag: "🇱🇹",
         normalizedName: "lithuania",
+        colorScheme: {
+          background: "#55BA07",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -831,8 +891,13 @@ export default defineEventHandler(
       {
         id: 13,
         name: "Luxembourg",
+        locale: "lu",
         flag: "🇱🇺",
         normalizedName: "luxembourg",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -893,7 +958,12 @@ export default defineEventHandler(
         id: 14,
         name: "Malta",
         flag: "🇲🇹",
+        locale: "mt",
         normalizedName: "malta",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -953,8 +1023,13 @@ export default defineEventHandler(
       {
         id: 15,
         name: "The Netherlands",
+        locale: "nl",
         flag: "🇳🇱",
         normalizedName: "the-netherlands",
+        colorScheme: {
+          background: "#FFFFFF",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -1069,8 +1144,13 @@ export default defineEventHandler(
       {
         id: 16,
         name: "Portugal",
+        locale: "pt",
         flag: "🇵🇹",
         normalizedName: "portugal",
+        colorScheme: {
+          background: "#2F8D00",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -1130,8 +1210,13 @@ export default defineEventHandler(
       {
         id: 17,
         name: "Slovakia",
+        locale: "sk",
         flag: "🇸🇰",
         normalizedName: "slovakia",
+        colorScheme: {
+          background: "#3D58DB",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -1191,8 +1276,13 @@ export default defineEventHandler(
       {
         id: 18,
         name: "Slovenia",
+        locale: "si",
         flag: "🇸🇮",
         normalizedName: "slovenia",
+        colorScheme: {
+          background: "#0000FF",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -1252,8 +1342,13 @@ export default defineEventHandler(
       {
         id: 19,
         name: "Spain",
+        locale: "es",
         flag: "🇪🇸",
         normalizedName: "spain",
+        colorScheme: {
+          background: "#AA151B",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -1386,8 +1481,13 @@ export default defineEventHandler(
       {
         id: 20,
         name: "Andorra",
+        locale: "ad",
         flag: "🇦🇩",
         normalizedName: "andorra",
+        colorScheme: {
+          background: "#FEDD00",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -1447,7 +1547,12 @@ export default defineEventHandler(
       {
         id: 21,
         name: "Monaco",
+        locale: "mc",
         flag: "🇲🇨",
+        colorScheme: {
+          background: "#C51918",
+          backgroundText: "light",
+        },
         normalizedName: "monaco",
         coinSet: [
           {
@@ -1563,8 +1668,13 @@ export default defineEventHandler(
       {
         id: 22,
         name: "San Marino",
+        locale: "sm",
         flag: "🇸🇲",
         normalizedName: "san-marino",
+        colorScheme: {
+          background: "#56C6F5",
+          backgroundText: "light",
+        },
         coinSet: [
           {
             id: 1,
@@ -1679,8 +1789,13 @@ export default defineEventHandler(
       {
         id: 23,
         name: "Vatican city",
+        locale: "va",
         flag: "🇻🇦",
         normalizedName: "vatican-city",
+        colorScheme: {
+          background: "#FFDC17",
+          backgroundText: "dark",
+        },
         coinSet: [
           {
             id: 1,
@@ -1954,5 +2069,5 @@ export default defineEventHandler(
           },
         ],
       },
-    ] satisfies CountriesResponse,
+    ] satisfies CountriesResponse
 );

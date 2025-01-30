@@ -9,7 +9,40 @@ export default defineNuxtConfig({
     "nuxt-icon",
     ["@nuxt/image", image],
     ["nuxt-gtag", gtag],
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@nuxtjs/color-mode",
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          Urbanist: [
+            100,
+            200,
+            300,
+            400,
+            500,
+            600,
+            700,
+            800,
+            900,
+          ],
+        },
+      },
+    ],
   ],
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: "",
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: "./components/ui",
+  },
+
   ssr: true,
   postcss: {
     plugins: {
