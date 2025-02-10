@@ -6,7 +6,7 @@ const props = defineProps<Country>();
 defineEmits<{
   (e: "coin-clicked", event: { coin: Coin; set: CoinSet }): void;
 }>();
-
+ 
 provide("country", props);
 
 const isCollapsed = ref(false);
