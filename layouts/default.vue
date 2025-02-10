@@ -1,7 +1,14 @@
 <script setup lang="ts">
 const { selectedCoins } = useSelectedCoins();
 
+const user = useSupabaseUser();
+const supabase = useSupabaseClient();
+
 const onClear = () => (selectedCoins.value = []);
+
+const onLogout = async () => {
+  await supabase.auth.signOut();
+};
 </script>
 
 <template>
@@ -26,6 +33,13 @@ const onClear = () => (selectedCoins.value = []);
 
         <p>EU Coin Collector</p>
       </div>
+      <AuthDialog v-if="!user" />
+      <Button
+        v-else
+        @click="onLogout"
+      >
+        Logout
+      </Button>
     </header>
     <main>
       <slot />

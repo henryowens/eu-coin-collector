@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core";
-import { ContentLoader } from "vue-content-loader";
 
-import ProgressBar from "~/components/core/ProgressBar.vue";
 import type { Coin } from "~/models/coins";
 import type { CoinSet, Country } from "~/models/countries";
 
-const { data: countries, isFetching, suspense } = useCountries();
+const { data: countries, suspense } = useCountries();
 
 onServerPrefetch(async () => await suspense());
 

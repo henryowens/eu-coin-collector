@@ -16,21 +16,26 @@ export default defineNuxtConfig({
       "@nuxtjs/google-fonts",
       {
         families: {
-          Urbanist: [
-            100,
-            200,
-            300,
-            400,
-            500,
-            600,
-            700,
-            800,
-            900,
-          ],
+          Urbanist: [100, 200, 300, 400, 500, 600, 700, 800, 900],
         },
       },
     ],
+    "@nuxtjs/supabase",
   ],
+  supabase: {
+    redirect: false,
+    persistSession: true,
+    cookieOptions: {
+      maxAge: 60 * 60 * 8,
+      sameSite: "lax",
+      secure: true,
+    },
+    auth: {
+      flowType: "refresh_token",
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  },
   shadcn: {
     /**
      * Prefix for all the imported component

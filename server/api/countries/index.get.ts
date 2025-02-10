@@ -2069,5 +2069,5 @@ export default defineEventHandler(
           },
         ],
       },
-    ] satisfies CountriesResponse
+    ] satisfies CountriesResponse,
 );

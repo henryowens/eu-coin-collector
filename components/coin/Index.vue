@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ContentLoader } from "vue-content-loader";
 
-import type { Coin, SelectedCoins } from "~/models/coins";
+import type { Coin } from "~/models/coins";
 import type { CoinSet, Country } from "~/models/countries";
 
 const props = defineProps<{
@@ -16,7 +16,7 @@ const isLoading = ref(true);
 
 const imageUrl = computed(
   () =>
-    `/assets/coins/${props.country.normalizedName.toLowerCase()}/${props.set.title ? `${props.set.title.toLowerCase().replaceAll(" ", "_")}-` : ""}${props.coin.name.toLowerCase().replaceAll(" ", "_")}.png`
+    `/assets/coins/${props.country.normalizedName.toLowerCase()}/${props.set.title ? `${props.set.title.toLowerCase().replaceAll(" ", "_")}-` : ""}${props.coin.name.toLowerCase().replaceAll(" ", "_")}.png`,
 );
 
 const isSelected = computed(
@@ -29,8 +29,8 @@ const isSelected = computed(
       }) =>
         selectedId === props.country.id &&
         selectedCoinSetId === props.set.id &&
-        selectedValue === props.coin.value
-    )
+        selectedValue === props.coin.value,
+    ),
 );
 </script>
 
