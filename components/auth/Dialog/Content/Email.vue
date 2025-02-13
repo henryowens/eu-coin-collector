@@ -1,41 +1,39 @@
 <script setup lang="ts">
-import { useMutation } from "@tanstack/vue-query";
-
 import Button from "~/components/ui/button/Button.vue";
 import DialogFooter from "~/components/ui/dialog/DialogFooter.vue";
 import Input from "~/components/ui/input/Input.vue";
+import { useVerifyEmailMutation } from "~/queries/auth";
 
 const emit = defineEmits<{
   (e: "email-submitted", email: string): void;
 }>();
 const email = ref<string>();
-const supabase = useSupabaseClient();
 
-const { mutateAsync: signInWithOtp, isPending: isEmailSubmitting } =
-  useMutation({
-    mutationFn: (email: string) =>
-      supabase.auth.signInWithOtp({
-        email,
-      }),
-  });
+const {
+  mutateAsync: signInWithOtp,
+  isPending: isEmailSubmitting,
+  error,
+  isSuccess: isEmailSuccess,
+} = useVerifyEmailMutation();
 
 const handleEmailComplete = async () => {
   if (!email.value?.length) return;
 
-  const { error } = await signInWithOtp(email.value);
+  try {
+    await signInWithOtp(email.value);
 
-  if (error) {
-    console.error("Error sending OTP:", error);
-
-    return;
-  }
-
-  emit("email-submitted", email.value);
+    emit("email-submitted", email.value);
+  } catch (error) {}
 };
+
+const errorMessage = computed(() => error.value?.message);
 </script>
 
 <template>
-  <div class="flex flex-col h-full gap-y-4">
+  <form
+    class="flex flex-col h-full gap-y-4"
+    @submit.prevent="handleEmailComplete"
+  >
     <div class="flex-1">
       <label
         for="email"
@@ -47,18 +45,27 @@ const handleEmailComplete = async () => {
         v-model="email"
         type="email"
         placeholder="example@gmail.com"
+        :disabled="isEmailSubmitting || isEmailSuccess"
         name="email"
         class="mt-1"
       />
+      <p
+        v-if="errorMessage"
+        class="text-red-600 text-sm mt-2"
+      >
+        {{ errorMessage }}
+      </p>
     </div>
 
     <DialogFooter>
       <Button
-        :disabled="isEmailSubmitting"
-        @click="handleEmailComplete"
+        :disabled="isEmailSubmitting || isEmailSuccess"
+        class="w-full"
+        type="submit"
+        size="lg"
       >
         Get Code
       </Button>
     </DialogFooter>
-  </div>
+  </form>
 </template>

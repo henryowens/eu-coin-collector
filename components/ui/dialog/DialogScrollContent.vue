@@ -9,7 +9,7 @@ import {
   DialogPortal,
   useForwardPropsEmits,
 } from "radix-vue";
-import { computed, type HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 import { cn } from "@/lib/utils";
 
@@ -18,11 +18,7 @@ const props = defineProps<
 >();
 const emit = defineEmits<DialogContentEmits>();
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
-
-  return delegated;
-});
+const delegatedProps = useOmit(props, "class");
 
 const forwarded = useForwardPropsEmits(delegatedProps, emit);
 </script>

@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { ToastRoot, type ToastRootEmits, useForwardPropsEmits } from 'radix-vue'
-import { computed } from 'vue'
-import { type ToastProps, toastVariants } from '.'
+import {
+  ToastRoot,
+  type ToastRootEmits,
+  useForwardPropsEmits,
+} from "radix-vue";
 
-const props = defineProps<ToastProps>()
+import { cn } from "@/lib/utils";
 
-const emits = defineEmits<ToastRootEmits>()
+import { type ToastProps, toastVariants } from ".";
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+const props = defineProps<ToastProps>();
 
-  return delegated
-})
+const emit = defineEmits<ToastRootEmits>();
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const delegatedProps = useOmit(props, ["class"]);
+
+const forwarded = useForwardPropsEmits(delegatedProps, emit);
 </script>
 
 <template>

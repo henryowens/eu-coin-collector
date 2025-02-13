@@ -1,14 +1,23 @@
 <script setup lang="ts">
-const { selectedCoins } = useSelectedCoins();
+import { useQueryClient } from "@tanstack/vue-query";
+
+import queries from "~/queries";
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient();
 
-const onClear = () => (selectedCoins.value = []);
+const queryClient = useQueryClient();
 
 const onLogout = async () => {
   await supabase.auth.signOut();
+  console.log("resettign queries");
+  queryClient.resetQueries({
+    queryKey: queries.selectedCoins.list._def,
+    exact: true,
+  });
 };
+
+const isLoginDialogOpen = ref(false);
 </script>
 
 <template>
@@ -33,13 +42,25 @@ const onLogout = async () => {
 
         <p>EU Coin Collector</p>
       </div>
-      <AuthDialog v-if="!user" />
+      <AuthDialog
+        :key="user?.id || 'unauthenticated'"
+        v-model="isLoginDialogOpen"
+        :has-trigger="false"
+      />
       <Button
-        v-else
-        @click="onLogout"
+        v-if="!user"
+        @click="isLoginDialogOpen = true"
       >
-        Logout
+        Login
       </Button>
+      <div
+        v-else
+        class="flex items-center gap-x-3"
+      >
+        <ProfileDialog />
+
+        <Button @click="onLogout">Logout</Button>
+      </div>
     </header>
     <main>
       <slot />
@@ -54,12 +75,12 @@ const onLogout = async () => {
   &--header {
     @apply bg-masala-900;
     @apply flex justify-between items-center;
-    @apply p-6 mb-3;
+    @apply p-4 sm:p-6 mb-0 sm:mb-3;
     &--logo {
       @apply flex justify-between items-center;
-      @apply gap-3;
+      @apply gap-2 sm:gap-3;
       > p {
-        @apply italic text-lg;
+        @apply italic text-base sm:text-lg;
         @apply font-extrabold;
         @apply text-masala-50;
         letter-spacing: 4px;

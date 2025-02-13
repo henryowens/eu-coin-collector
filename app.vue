@@ -22,26 +22,16 @@ useHead({
 });
 
 const { toast } = useToast();
-const session = useSupabaseSession();
 const user = useSupabaseUser();
 
 watch(user, (newUser) => {
-  if (newUser)
-    toast({
-      title: "Welcome back!",
-      description: "You have successfully signed in.",
-    });
-  else toast({ title: "Goodbye!", description: "You have signed out." });
+  if (!newUser)
+    toast({ title: "Goodbye!", description: "You have signed out." });
 });
 </script>
 
 <template>
   <NuxtLayout>
-    <p>
-      blahh
-      {{ user }}
-      {{ session }}
-    </p>
     <Toaster />
     <NuxtPage />
     <CookieConsent />

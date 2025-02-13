@@ -1,15 +1,18 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
-import axios from "axios";
 
-import type { CoinsResponse } from "~/models/api";
+import type { Database } from "~/types/database.types";
 
 export default createQueryKeys("coins", {
-  list: () => ({
-    queryKey: ["list"],
-    queryFn: async () => {
-      const repsonse = await axios.get<CoinsResponse>("/api/coins");
+  list: () => {
+    const client = useSupabaseClient<Database>();
 
-      return repsonse.data;
-    },
-  }),
+    return {
+      queryKey: ["list"],
+      queryFn: async () => {
+        const repsonse = await client.from("coins").select("*");
+
+        return repsonse.data;
+      },
+    };
+  },
 });

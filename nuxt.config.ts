@@ -1,4 +1,4 @@
-import { gtag, image } from "./config";
+import { googleFonts, gtag, image, shadcn, supabase } from "./config";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -10,44 +10,13 @@ export default defineNuxtConfig({
     ["@nuxt/image", image],
     ["nuxt-gtag", gtag],
     "@nuxtjs/tailwindcss",
-    "shadcn-nuxt",
+    ["shadcn-nuxt", shadcn],
     "@nuxtjs/color-mode",
-    [
-      "@nuxtjs/google-fonts",
-      {
-        families: {
-          Urbanist: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-        },
-      },
-    ],
-    "@nuxtjs/supabase",
+    ["@nuxtjs/google-fonts", googleFonts],
+    ["@nuxtjs/supabase", supabase],
+    "nuxt-lodash",
+    "@vueuse/nuxt",
   ],
-  supabase: {
-    redirect: false,
-    persistSession: true,
-    cookieOptions: {
-      maxAge: 60 * 60 * 8,
-      sameSite: "lax",
-      secure: true,
-    },
-    auth: {
-      flowType: "refresh_token",
-      persistSession: true,
-      autoRefreshToken: true,
-    },
-  },
-  shadcn: {
-    /**
-     * Prefix for all the imported component
-     */
-    prefix: "",
-    /**
-     * Directory that the component lives in.
-     * @default "./components/ui"
-     */
-    componentDir: "./components/ui",
-  },
-
   ssr: true,
   postcss: {
     plugins: {

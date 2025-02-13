@@ -5,7 +5,7 @@ import {
   type PinInputRootProps,
   useForwardPropsEmits,
 } from "radix-vue";
-import { computed, type HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 import { cn } from "@/lib/utils";
 
@@ -16,15 +16,11 @@ const props = withDefaults(
     modelValue: () => [],
   },
 );
-const emits = defineEmits<PinInputRootEmits>();
+const emit = defineEmits<PinInputRootEmits>();
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
+const delegatedProps = useOmit(props, ["class"]);
 
-  return delegated;
-});
-
-const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const forwarded = useForwardPropsEmits(delegatedProps, emit);
 </script>
 
 <template>

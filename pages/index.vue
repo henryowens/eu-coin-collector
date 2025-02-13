@@ -1,72 +1,36 @@
 <script setup lang="ts">
-import { useWindowScroll } from "@vueuse/core";
-
-import type { Coin } from "~/models/coins";
-import type { CoinSet, Country } from "~/models/countries";
+import { useSelectCoin } from "~/queries/selectedCoins";
 
 const { data: countries, suspense } = useCountries();
 
 onServerPrefetch(async () => await suspense());
 
-const { selectedCoins } = useSelectedCoins();
-const filterSelectedCountries = useFilterSelectedCountries();
-const { track } = useTracking();
+const filteredCountries = computed(() => countries.value);
 
-const onCoinClicked = (coin: Coin, set: CoinSet, country: Country) => {
-  const id = country.id;
-  const coinSetId = set.id;
-  const value = coin.value;
+const user = useSupabaseUser();
+const isAuthDialogOpen = ref(false);
 
-  const index = selectedCoins.value.findIndex(
-    ({ id: selectedId, coinSetId: selectedCoinSetId, value: selectedValue }) =>
-      selectedId === id &&
-      selectedCoinSetId === coinSetId &&
-      selectedValue === value,
-  );
+const { mutateAsync: selectCoin } = useSelectCoin();
 
-  if (index === -1) {
-    selectedCoins.value.push({ id, coinSetId, value });
-    track(TrackEventNames.CoinSelected, {});
-  } else {
-    selectedCoins.value.splice(index, 1);
-    track(TrackEventNames.CoinUnselected, {});
-  }
+const onCoinSelect = async (coinId: string) => {
+  if (!user.value) isAuthDialogOpen.value = true;
+
+  await selectCoin(coinId);
 };
-
-const filteredCountries = computed(() =>
-  !filterSelectedCountries.value.length
-    ? countries.value
-    : countries.value?.filter(({ id }) =>
-        filterSelectedCountries.value.includes(id),
-      ),
-);
-
-provide("selectedCoins", selectedCoins);
-
-const { y } = useWindowScroll();
-
-const totalCoins = computed(
-  () =>
-    countries.value?.reduce(
-      (acc, country) =>
-        acc +
-        country.coinSet.reduce((acc, coinSet) => acc + coinSet.coins.length, 0),
-      0,
-    ) ?? 0,
-);
-
-const percentageCollected = computed(
-  () => (selectedCoins.value.length / totalCoins.value) * 100,
-);
 </script>
 
 <template>
   <div class="home__page">
+    <AuthDialog v-model="isAuthDialogOpen" />
     <div class="flex flex-col w-fit">
-      <h1 class="text-3xl font-extrabold tracking-[8px] text-masala-900 pb-2">
+      <h1
+        class="text-3xl font-extrabold tracking-widest sm:racking-[8px] text-masala-900 pb-2"
+      >
         Coin Selector Portal
       </h1>
-      <p class="text-sm font-extrabold tracking-[4px] text-masala-500 pb-4">
+      <p
+        class="text-sm font-extrabold tracking-wider sm:tracking-[4px] text-masala-500 pb-4"
+      >
         Here you can keep track of your coin collection.
       </p>
       <div class="h-[6px] rounded-[10px] w-full bg-masala-100" />
@@ -79,7 +43,7 @@ const percentageCollected = computed(
       <div
         class="home__page--country__container--header"
         :style="{
-          backgroundColor: country.colorScheme.background,
+          backgroundColor: country.background_color,
         }"
       >
         <Icon
@@ -88,7 +52,7 @@ const percentageCollected = computed(
         />
         <h2
           :class="
-            country.colorScheme.backgroundText === 'light'
+            country.text_color === 'light'
               ? 'text-masala-50'
               : 'text-masala-900'
           "
@@ -99,7 +63,7 @@ const percentageCollected = computed(
 
       <div class="home__page--country__container--coins__set__container">
         <div
-          v-for="(set, setIndex) in country.coinSet"
+          v-for="(set, setIndex) in country.coin_sets"
           :key="setIndex"
           class="home__page--country__container--coins__set__container--coin__set"
         >
@@ -113,76 +77,16 @@ const percentageCollected = computed(
               :coin="coin"
               :set="set"
               :country="country"
-              @click="onCoinClicked(coin, set, country)"
+              @coin-selected="() => onCoinSelect(coin.id)"
             />
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- <div class="index__page">
-    <div class="fade-in w-full">
-      <BackToTopButton
-        v-if="y > 250"
-        class="fade-in"
-      />
-      <div class="flex flex-col gap-4">
-        <ProgressBar
-          :progress="percentageCollected"
-          :is-loading="isFetching"
-        />
-        <Filter />
-      </div>
-
-      <Transition
-        name="fade"
-        class="index__page--countries__container"
-        mode="out-in"
-      >
-        <div
-          v-if="isFetching"
-          class="overflow-hidden m-auto max-w-[950px]"
-        >
-          <div
-            v-for="i in 3"
-            :key="i"
-            class="country__loader p-6"
-          >
-            <ContentLoader
-              :width="90"
-              :height="28"
-              class="mb-4"
-            />
-            <ContentLoader
-              width="100%"
-              :height="132"
-              class="mb-4"
-            />
-          </div>
-        </div>
-
-        <TransitionGroup
-          v-else
-          name="fade"
-          tag="div"
-        >
-          <div
-            v-for="(country, index) in filteredCountries"
-            :key="index"
-          >
-            <Country
-              v-bind="country"
-              @coin-clicked="onCoinClicked($event.coin, $event.set, country)"
-            />
-            <hr v-if="index + 1 !== filterSelectedCountries.length" />
-          </div>
-        </TransitionGroup>
-      </Transition>
-    </div>
-  </div> -->
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .home__page {
   @apply max-w-[855px] m-auto p-5 flex flex-col gap-4;
   &--country__container {
@@ -198,7 +102,7 @@ const percentageCollected = computed(
       }
     }
     &--coins__set__container {
-      @apply flex flex-col gap-3 px-5 pb-5;
+      @apply flex flex-col gap-3 pb-5;
       &--coin__set {
         @apply flex flex-col gap-2;
         > h3 {
@@ -207,9 +111,14 @@ const percentageCollected = computed(
           @apply text-sm;
           @apply tracking-widest;
           @apply text-masala-500;
+          @apply px-5;
         }
         &--coins {
-          @apply flex gap-4;
+          @apply overflow-x-scroll px-5;
+          @apply gap-4 py-5;
+          display: grid;
+          grid-auto-flow: column;
+          justify-content: start;
           > img {
             @apply w-20 h-20;
           }
