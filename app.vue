@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Toaster, useToast } from "@/components/ui/toast";
+
 useHead({
   title: "🇪🇺 EU Coin Collector",
   meta: [
@@ -18,10 +20,19 @@ useHead({
     lang: "en",
   },
 });
+
+const { toast } = useToast();
+const user = useSupabaseUser();
+
+watch(user, (newUser) => {
+  if (!newUser)
+    toast({ title: "Goodbye!", description: "You have signed out." });
+});
 </script>
 
 <template>
   <NuxtLayout>
+    <Toaster />
     <NuxtPage />
     <CookieConsent />
   </NuxtLayout>
