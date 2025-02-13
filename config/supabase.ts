@@ -7,6 +7,8 @@ export default {
     sameSite: "lax",
     secure: true,
   },
+  url: "https://ytavscywezkcabzofwnc.supabase.co",
+  key: process.env.NEXT_PUBLIC_SUPABASE_KEY,
   clientOptions: {
     auth: {
       flowType: "implicit",
