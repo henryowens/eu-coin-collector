@@ -1,4 +1,4 @@
-import { gtag, image } from "./config";
+import { googleFonts, gtag, image, shadcn, supabase } from "./config";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -9,6 +9,13 @@ export default defineNuxtConfig({
     "nuxt-icon",
     ["@nuxt/image", image],
     ["nuxt-gtag", gtag],
+    "@nuxtjs/tailwindcss",
+    ["shadcn-nuxt", shadcn],
+    "@nuxtjs/color-mode",
+    ["@nuxtjs/google-fonts", googleFonts],
+    ["@nuxtjs/supabase", supabase],
+    "nuxt-lodash",
+    "@vueuse/nuxt",
   ],
   ssr: true,
   postcss: {

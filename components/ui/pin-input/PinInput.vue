@@ -1,0 +1,33 @@
+<script setup lang="ts">
+import {
+  PinInputRoot,
+  type PinInputRootEmits,
+  type PinInputRootProps,
+  useForwardPropsEmits,
+} from "radix-vue";
+import { type HTMLAttributes } from "vue";
+
+import { cn } from "@/lib/utils";
+
+const props = withDefaults(
+  defineProps<PinInputRootProps & { class?: HTMLAttributes["class"] }>(),
+  {
+    class: "",
+    modelValue: () => [],
+  },
+);
+const emit = defineEmits<PinInputRootEmits>();
+
+const delegatedProps = useOmit(props, ["class"]);
+
+const forwarded = useForwardPropsEmits(delegatedProps, emit);
+</script>
+
+<template>
+  <PinInputRoot
+    v-bind="forwarded"
+    :class="cn('flex gap-2 items-center', props.class)"
+  >
+    <slot />
+  </PinInputRoot>
+</template>

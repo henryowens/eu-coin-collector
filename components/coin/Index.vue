@@ -1,38 +1,63 @@
 <script setup lang="ts">
+import type { RealtimeChannel } from "@supabase/supabase-js";
+import { useQuery } from "@tanstack/vue-query";
 import { ContentLoader } from "vue-content-loader";
 
-import type { Coin, SelectedCoins } from "~/models/coins";
-import type { CoinSet, Country } from "~/models/countries";
+import queries from "~/queries";
+import type { FullCountry } from "~/queries/countries";
+import type { Database } from "~/types/database.types";
 
 const props = defineProps<{
-  coin: Coin;
-  set: CoinSet;
+  country: FullCountry;
+  set: FullCountry["coin_sets"][number];
+  coin: FullCountry["coin_sets"][number]["coins"][number];
 }>();
 
-const country = inject<Country>("country");
+defineEmits<{
+  (e: "coin-selected"): void;
+}>();
 
-const selectedCoins = inject<Ref<SelectedCoins>>("selectedCoins");
+let realtimeChannel: RealtimeChannel;
+const client = useSupabaseClient<Database>();
+const user = useSupabaseUser();
 
-const isLoading = ref(true);
+const isLoading = ref(false);
 
 const imageUrl = computed(
   () =>
-    `/assets/coins/${country?.normalizedName.toLowerCase()}/${props.set.title ? `${props.set.title.toLowerCase().replaceAll(" ", "_")}-` : ""}${props.coin.name.toLowerCase().replaceAll(" ", "_")}.png`,
+    `/assets/coins/${props.country.normalised_name.toLowerCase()}/${props.set.title ? `${props.set.title.toLowerCase().replaceAll(" ", "_")}-` : ""}${props.coin.base_coin.name.toLowerCase().replaceAll(" ", "_")}.png`,
 );
 
-const isSelected = computed(
-  () =>
-    !!selectedCoins?.value.find(
-      ({
-        id: selectedId,
-        coinSetId: selectedCoinSetId,
-        value: selectedValue,
-      }) =>
-        selectedId === country?.id &&
-        selectedCoinSetId === props.set.id &&
-        selectedValue === props.coin.value,
-    ),
+const { data: selectedCoins, refetch: refetchSelectedCoins } = useQuery(
+  queries.selectedCoins.list(),
 );
+onMounted(() => {
+  // Real time listener for new workouts
+  realtimeChannel = client
+    .channel("public:selected_coins")
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "selected_coins" },
+      () => refetchSelectedCoins(),
+    );
+
+  realtimeChannel.subscribe();
+});
+
+// Don't forget to unsubscribe when user left the page
+onUnmounted(() => {
+  client.removeChannel(realtimeChannel);
+});
+const isSelected = computed(() => {
+  if (!user.value) return false;
+
+  return !(
+    !selectedCoins.value ||
+    selectedCoins.value.findIndex(
+      ({ coin_id: coinId }) => coinId === props.coin.id,
+    ) === -1
+  );
+});
 </script>
 
 <template>
@@ -41,10 +66,11 @@ const isSelected = computed(
     :class="{
       'coin-selected': isSelected,
     }"
+    @click="$emit('coin-selected')"
   >
     <img
       :src="imageUrl"
-      :alt="`Image of a ${coin.value} coin from ${country?.name}`"
+      :alt="`Image of a ${coin.base_coin.value} coin from ${country.name}`"
       width="90"
       height="90"
       @load="() => (isLoading = false)"
@@ -86,9 +112,18 @@ const isSelected = computed(
   }
 }
 .coin-selected {
+  @apply items-center;
   img {
     @apply transition-all;
+    @apply relative;
     @apply outline-green-600;
+  }
+  &::after {
+    content: "";
+    @apply rounded-full h-[75px] w-[75px];
+    @apply bg-green-600;
+    @apply opacity-30;
+    @apply absolute z-10;
   }
 }
 </style>
