@@ -92,8 +92,8 @@ jobs:
         uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: ".output/public"
-          production-branch: "acc"
-          alias: "acc" # This ensures deployment to acc.<domain>.com
+          production-branch: "main" # Ensure this is set correctly for your production branch
+          alias: "acc" # Maps deployment to acc.eucoincollector.com
           deploy-message: "Deploy from GitHub Actions (acc branch)"
           enable-pull-request-comment: false
           enable-commit-comment: true
@@ -104,3 +104,5 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NUXT_PUBLIC_ENV: "staging"
+        
+        
