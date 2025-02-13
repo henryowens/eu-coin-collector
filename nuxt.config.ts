@@ -26,7 +26,7 @@ export default defineNuxtConfig({
     },
   },
 
-  ssr: true,
+  ssr: false,
 
   postcss: {
     plugins: {
