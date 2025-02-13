@@ -17,6 +17,13 @@ export default defineNuxtConfig({
     "nuxt-lodash",
     "@vueuse/nuxt",
   ],
+  nitro: {
+    baseURL: "http://localhost:8000",
+    prerender: {
+      crawlLinks: true,
+      failOnError: false, 
+    },
+  },
   ssr: true,
   postcss: {
     plugins: {
