@@ -8,3 +8,4 @@ export default defineNuxtRouteMiddleware(() => {
     $segment?.page("Page", currentRoute.value.fullPath);
   }, 2000);
 });
+ 
