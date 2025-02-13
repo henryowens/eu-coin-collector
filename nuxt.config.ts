@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     baseURL: "http://localhost:8000",
     prerender: {
       crawlLinks: true,
-      failOnError: false, 
+      failOnError: false,
     },
   },
   ssr: true,

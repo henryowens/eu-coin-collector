@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 const props = defineProps<
   PrimitiveProps & { class?: HTMLAttributes["class"] }
 >();
+
 const delegatedProps = useOmit(props, "class");
 const forwardedProps = useForwardProps(delegatedProps);
 </script>
