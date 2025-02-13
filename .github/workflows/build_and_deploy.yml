@@ -32,7 +32,7 @@ jobs:
         env:
           NUXT_PUBLIC_ENV: "production"
 
-      - name: Lint & Fix 🧹
+      - name: Lint & Fix 🧹 
         run: |
           pnpm run lint-fix
 
