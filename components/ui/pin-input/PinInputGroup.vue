@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { Primitive, type PrimitiveProps, useForwardProps } from "radix-vue";
-import { type HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 
 import { cn } from "@/lib/utils";
 
 const props = defineProps<
   PrimitiveProps & { class?: HTMLAttributes["class"] }
 >();
+const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props;
 
-const delegatedProps = useOmit(props, "class");
+  return delegated;
+});
 const forwardedProps = useForwardProps(delegatedProps);
 </script>
 

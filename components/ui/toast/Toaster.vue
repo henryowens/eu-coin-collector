@@ -1,26 +1,14 @@
 <script setup lang="ts">
-import { isVNode } from "vue";
+import { isVNode } from 'vue'
+import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '.'
+import { useToast } from './use-toast'
 
-import {
-  Toast,
-  ToastClose,
-  ToastDescription,
-  ToastProvider,
-  ToastTitle,
-  ToastViewport,
-} from ".";
-import { useToast } from "./use-toast";
-
-const { toasts } = useToast();
+const { toasts } = useToast()
 </script>
 
 <template>
   <ToastProvider>
-    <Toast
-      v-for="toast in toasts"
-      :key="toast.id"
-      v-bind="toast"
-    >
+    <Toast v-for="toast in toasts" :key="toast.id" v-bind="toast">
       <div class="grid gap-1">
         <ToastTitle v-if="toast.title">
           {{ toast.title }}
