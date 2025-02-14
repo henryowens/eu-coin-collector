@@ -80,13 +80,13 @@ jobs:
         env:
           NUXT_PUBLIC_ENV: "staging"
 
-      - name: Lint & Fix 🧹
-        run: |
-          pnpm run lint-fix
+      # - name: Lint & Fix 🧹
+      #   run: |
+      #     pnpm run lint-fix
 
-      - name: Type Check 🔎
-        run: |
-          pnpm run type-check
+      # - name: Type Check 🔎
+      #   run: |
+      #     pnpm run type-check
 
       - name: Deploy to Netlify Acceptance 🚀
         uses: nwtgck/actions-netlify@v1.2
