@@ -74,6 +74,9 @@ dependencies:
   uuid:
     specifier: ^11.0.5
     version: 11.0.5
+  vaul-vue:
+    specifier: ^0.2.1
+    version: 0.2.1(radix-vue@1.9.14)(vue@3.5.13)
   vue:
     specifier: ^3.4.27
     version: 3.5.13(typescript@5.7.3)
@@ -6479,6 +6482,7 @@ packages:
 
   /napi-wasm@1.1.3:
     resolution: {integrity: sha512-h/4nMGsHjZDCYmQVNODIrYACVJ+I9KItbG+0si6W/jSjdA9JbWDoU4LLeMXVcEQGHjttI2tuXqDrbGF7qkUHHg==}
+    requiresBuild: true
     dev: false
 
   /natural-compare@1.4.0:
@@ -9374,6 +9378,19 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
     dev: true
+
+  /vaul-vue@0.2.1(radix-vue@1.9.14)(vue@3.5.13):
+    resolution: {integrity: sha512-iF91R1JQZzxb9mb9uGNHYv8rVFxR5bL5Fj51iqvyXjzMPAzNMciCrXb9OUBu2NdlhcF6rVtEADXnQoTY+pKIeA==}
+    peerDependencies:
+      radix-vue: ^1.4.0
+      vue: ^3.3.0
+    dependencies:
+      '@vueuse/core': 10.11.1(vue@3.5.13)
+      radix-vue: 1.9.14(vue@3.5.13)
+      vue: 3.5.13(typescript@5.7.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+    dev: false
 
   /vite-hot-client@0.2.4(vite@6.1.0):
     resolution: {integrity: sha512-a1nzURqO7DDmnXqabFOliz908FRmIppkBKsJthS8rbe8hBEXwEwe4C3Pp33Z1JoFCYfVL4kTOMLKk0ZZxREIeA==}
