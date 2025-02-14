@@ -28,9 +28,21 @@ watch(user, (newUser) => {
   if (!newUser)
     toast({ title: "Goodbye!", description: "You have signed out." });
 });
+
+const { isLocal, isAcceptance } = useAppEnv();
 </script>
 
 <template>
+  <div
+    v-if="isLocal || isAcceptance"
+    class="p-4 flex items-center justify-center font-bold text-white tracking-wide"
+    :class="{
+      'bg-green-400': isLocal,
+      'bg-orange-400': isAcceptance,
+    }"
+  >
+    {{ isLocal ? "LOCAL" : "ACCEPTANCE" }} ENV
+  </div>
   <NuxtLayout>
     <Toaster />
     <NuxtPage />
