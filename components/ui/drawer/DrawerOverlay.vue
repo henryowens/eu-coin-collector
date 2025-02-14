@@ -1,18 +1,20 @@
 <script lang="ts" setup>
-import type { DialogOverlayProps } from 'radix-vue'
-import { cn } from '@/lib/utils'
-import { DrawerOverlay } from 'vaul-vue'
-import { computed, type HtmlHTMLAttributes } from 'vue'
+import type { DialogOverlayProps } from "radix-vue";
+import { DrawerOverlay } from "vaul-vue";
+import { type HtmlHTMLAttributes } from "vue";
 
-const props = defineProps<DialogOverlayProps & { class?: HtmlHTMLAttributes['class'] }>()
+import { cn } from "@/lib/utils";
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+const props = defineProps<
+  DialogOverlayProps & { class?: HtmlHTMLAttributes["class"] }
+>();
 
-  return delegated
-})
+const delegatedProps = useOmit(props, ["class"]);
 </script>
 
 <template>
-  <DrawerOverlay v-bind="delegatedProps" :class="cn('fixed inset-0 z-50 bg-black/80', props.class)" />
+  <DrawerOverlay
+    v-bind="delegatedProps"
+    :class="cn('fixed inset-0 z-50 bg-black/80', props.class)"
+  />
 </template>
