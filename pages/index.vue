@@ -80,15 +80,10 @@ const countriesToDisplay = computed(() => {
       return sortedCountriesByName.value;
   }
 });
-
-const {
-  $config: { public: pub },
-} = useNuxtApp();
 </script>
 
 <template>
   <div class="home__page">
-    {{ pub }}
     <AuthDialog v-model="isAuthDialogOpen" />
     <div class="flex flex-col w-fit">
       <h1
