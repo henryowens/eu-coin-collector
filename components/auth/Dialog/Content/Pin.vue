@@ -3,7 +3,7 @@ import DialogFooter from "~/components/ui/dialog/DialogFooter.vue";
 import PinInput from "~/components/ui/pin-input/PinInput.vue";
 import PinInputGroup from "~/components/ui/pin-input/PinInputGroup.vue";
 import PinInputInput from "~/components/ui/pin-input/PinInputInput.vue";
-import { useVerifyOtpMutation } from "~/queries/auth";
+import { useVerifyEmailMutation, useVerifyOtpMutation } from "~/queries/auth";
 
 const props = defineProps<{
   email: string;
@@ -21,6 +21,21 @@ const {
   error,
   isSuccess: isCodeSuccess,
 } = useVerifyOtpMutation();
+
+const {
+  mutateAsync: resendPin,
+  isPending: isResendPinSubmitting,
+  error: resendPinError,
+  isSuccess: isResendPinSuccess,
+} = useVerifyEmailMutation();
+
+const isLoading = computed(
+  () =>
+    isCodeSubmitting.value ||
+    isResendPinSubmitting.value ||
+    isCodeSuccess.value,
+);
+
 const handlePinComplete = async () => {
   const formattedPin = pinCode.value?.join("");
   if (!formattedPin?.length) return;
@@ -32,9 +47,13 @@ const handlePinComplete = async () => {
   await supabase.auth.refreshSession();
 };
 
-const onResendPin = async () => {};
+const onResendPin = async () => {
+  await resendPin(props.email);
+};
 
-const errorMessage = computed(() => error.value?.message);
+const errorMessage = computed(
+  () => error.value?.message ?? resendPinError.value?.message,
+);
 </script>
 
 <template>
@@ -64,6 +83,7 @@ const errorMessage = computed(() => error.value?.message);
         <PinInput
           id="pin-input"
           v-model="pinCode"
+          :disabled="isLoading"
           placeholder="○"
           class="justify-center mt-1"
           name="pin"
@@ -83,11 +103,17 @@ const errorMessage = computed(() => error.value?.message);
         >
           {{ errorMessage }}
         </p>
+        <p
+          v-else-if="isResendPinSuccess"
+          class="text-green-600 text-sm mt-2"
+        >
+          Pin resent successfully
+        </p>
       </div>
 
       <DialogFooter>
         <Button
-          :disabled="isCodeSubmitting || isCodeSuccess"
+          :disabled="isLoading"
           class="w-full text-accent-foreground"
           variant="outline"
           size="lg"
@@ -96,7 +122,7 @@ const errorMessage = computed(() => error.value?.message);
           Resend Pin
         </Button>
         <Button
-          :disabled="isCodeSubmitting || isCodeSuccess"
+          :disabled="isLoading"
           class="w-full"
           size="lg"
           type="submit"
