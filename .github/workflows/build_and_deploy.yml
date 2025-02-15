@@ -30,9 +30,13 @@ jobs:
           pnpm i
           pnpm run generate
         env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NUXT_PUBLIC_ENV: "production"
 
-      - name: Lint & Fix 🧹 
+      - name: Lint & Fix 🧹
         run: |
           pnpm run lint-fix
 
@@ -78,7 +82,11 @@ jobs:
           pnpm i
           pnpm run generate
         env:
-          NUXT_PUBLIC_ENV: "staging"
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          NUXT_PUBLIC_ENV: "acceptance"
 
       # - name: Lint & Fix 🧹
       #   run: |
@@ -104,5 +112,3 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NUXT_PUBLIC_ENV: "acceptance"
-        
-        
