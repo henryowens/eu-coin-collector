@@ -2,7 +2,7 @@
 import Button from "~/components/ui/button/Button.vue";
 import DialogFooter from "~/components/ui/dialog/DialogFooter.vue";
 import Input from "~/components/ui/input/Input.vue";
-import { useVerifyEmailMutation } from "~/queries/auth";
+import { useVerifyEmailMutation } from "~/mutations/auth";
 
 const emit = defineEmits<{
   (e: "email-submitted", email: string): void;

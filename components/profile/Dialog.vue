@@ -11,7 +11,6 @@ import {
 const user = useSupabaseUser();
 
 const email = ref(user.value?.email);
-const phone = ref(user.value?.phone);
 </script>
 
 <template>
@@ -38,7 +37,8 @@ const phone = ref(user.value?.phone);
         >
           Last Logged In:
           <span class="text-slate-900 font-bold">
-            {{ new Date(user.last_sign_in_at).toLocaleString() }}
+            {{ new Date(user.created_at).toLocaleDateString() }} at
+            {{ new Date(user.last_sign_in_at).toLocaleTimeString() }}
           </span>
         </p>
         <p
@@ -47,30 +47,38 @@ const phone = ref(user.value?.phone);
         >
           Member Since:
           <span class="text-slate-900 font-bold">
-            {{ new Date(user.created_at).toLocaleString() }}
+            {{ new Date(user.created_at).toLocaleDateString() }}
           </span>
         </p>
       </div>
       <hr />
-      <form class="flex flex-col gap-y-3">
+      <div class="flex flex-col gap-y-3">
         <h2>Account Information</h2>
-        <div>
+        <div class="w-full">
           <label
             class="text-sm text-slate-500"
             for="email"
           >
             Email:
           </label>
-          <Input
-            v-model="email"
-            type="email"
-            class="mt-1"
-            name="email"
-            placeholder="example@gmail.com"
-          />
+          <div class="flex items-center justify-between gap-4">
+            <Input
+              v-model="email"
+              :disabled="true"
+              type="email"
+              class="mt-1"
+              name="email"
+              placeholder="example@gmail.com"
+            />
+            <Icon
+              name="ion:checkmark-circle"
+              size="22px"
+              class="text-green-500"
+            />
+          </div>
         </div>
 
-        <div>
+        <!-- <div>
           <label
             class="text-sm text-slate-500"
             for="phone"
@@ -79,15 +87,35 @@ const phone = ref(user.value?.phone);
           </label>
           <Input
             v-model="phone"
+            :disabled="isUserUpdating"
             type="tel"
             name="phone"
             class="mt-1"
             placeholder="+44 4 43532 333"
           />
-        </div>
+        </div> -->
+        <!-- 
+        <p
+          v-if="error"
+          class="text-red-600 text-sm mt-2"
+        >
+          {{ error }}
+        </p>
+        <p
+          v-else-if="isSuccess"
+          class="text-green-600 text-sm mt-2"
+        >
+          Your account has been updated successfully
+        </p> -->
 
-        <Button>Update</Button>
-      </form>
+        <!-- <Button
+          size="lg"
+          type="submit"
+          :disabled="isUserUpdating"
+        >
+          Update
+        </Button> -->
+      </div>
     </DialogContent>
   </Dialog>
 </template>

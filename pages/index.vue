@@ -5,8 +5,6 @@ const { data: countries, suspense } = useCountries();
 
 onServerPrefetch(async () => await suspense());
 
-const filteredCountries = computed(() => countries.value);
-
 const user = useSupabaseUser();
 const isAuthDialogOpen = ref(false);
 
@@ -17,6 +15,71 @@ const onCoinSelect = async (coinId: string) => {
 
   await selectCoin(coinId);
 };
+
+const { data: selectedCoinsData } = useRealtimeSelectedCoins();
+
+const filterSelected = ref<"all" | "selected" | "unselected">();
+
+const sortedCountriesByName = computed(() => {
+  if (!countries.value) return [];
+
+  const countriesCopy = [...countries.value];
+
+  return countriesCopy.sort((a, b) => {
+    const nameA = a.name.toLowerCase();
+    const nameB = b.name.toLowerCase();
+
+    return nameA.localeCompare(nameB);
+  });
+});
+
+// I want to make this function again but if the coin set if empty then dont show it and then if all coin sets are empty then dont show the country
+const getSelectedCoins = (selected: boolean) =>
+  sortedCountriesByName.value
+    .map((country) => {
+      const countryCopy = { ...country };
+
+      countryCopy.coin_sets = countryCopy.coin_sets.map((set) => {
+        const setCopy = { ...set };
+
+        const selectedIds = selectedCoinsData.value?.map(
+          ({ coin_id: coinId }) => coinId,
+        );
+
+        setCopy.coins = setCopy.coins.filter((coin) =>
+          selected
+            ? selectedIds?.includes(coin.id)
+            : !selectedIds?.includes(coin.id),
+        );
+
+        return setCopy;
+      });
+
+      return countryCopy;
+    })
+    .map((country) => {
+      const countryCopy = { ...country };
+
+      countryCopy.coin_sets = countryCopy.coin_sets.filter(
+        (set) => set.coins.length > 0,
+      );
+
+      return countryCopy;
+    })
+    .filter((country) => country.coin_sets.length > 0);
+
+const countriesToDisplay = computed(() => {
+  if (!selectedCoinsData.value) return sortedCountriesByName.value;
+
+  switch (filterSelected.value) {
+    case "selected":
+      return getSelectedCoins(true);
+    case "unselected":
+      return getSelectedCoins(false);
+    default:
+      return sortedCountriesByName.value;
+  }
+});
 </script>
 
 <template>
@@ -35,50 +98,72 @@ const onCoinSelect = async (coinId: string) => {
       </p>
       <div class="h-[6px] rounded-[10px] w-full bg-masala-100" />
     </div>
-    <div
-      v-for="(country, countryIndex) in filteredCountries"
-      :key="countryIndex"
-      class="home__page--country__container"
-    >
-      <div
-        class="home__page--country__container--header"
-        :style="{
-          backgroundColor: country.background_color,
-        }"
-      >
-        <Icon
-          :name="`flag:${country.locale}-1x1`"
-          class="w-[30px] h-[30px] rounded-full"
-        />
-        <h2
-          :class="
-            country.text_color === 'light'
-              ? 'text-masala-50'
-              : 'text-masala-900'
-          "
-        >
-          {{ country.name }}
-        </h2>
+    <div class="filters">
+      <div>
+        <Select v-model="filterSelected">
+          <SelectTrigger>
+            <SelectValue placeholder="Filter on selected coins" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="selected">Selected</SelectItem>
+              <SelectItem value="unselected">Not Selected</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
-
-      <div class="home__page--country__container--coins__set__container">
+    </div>
+    <div class="transition-all duration-500 ease-in-out">
+      <div
+        v-for="(country, countryIndex) in countriesToDisplay"
+        :key="countryIndex"
+        class="home__page--country__container"
+      >
         <div
-          v-for="(set, setIndex) in country.coin_sets"
-          :key="setIndex"
-          class="home__page--country__container--coins__set__container--coin__set"
+          class="home__page--country__container--header"
+          :style="{
+            backgroundColor: country.background_color,
+          }"
         >
-          <h3 v-if="set.title">{{ set.title }}</h3>
-          <div
-            class="home__page--country__container--coins__set__container--coin__set--coins"
+          <Icon
+            :name="`flag:${country.locale}-1x1`"
+            class="w-[30px] h-[30px] rounded-full"
+          />
+          <h2
+            :class="
+              country.text_color === 'light'
+                ? 'text-masala-50'
+                : 'text-masala-900'
+            "
           >
-            <Coin
-              v-for="(coin, coinIndex) in set.coins"
-              :key="coinIndex"
-              :coin="coin"
-              :set="set"
-              :country="country"
-              @coin-selected="() => onCoinSelect(coin.id)"
-            />
+            {{ country.name }}
+          </h2>
+        </div>
+
+        <div class="home__page--country__container--coins__set__container">
+          <div
+            v-for="(set, setIndex) in country.coin_sets"
+            :key="setIndex"
+            class="home__page--country__container--coins__set__container--coin__set"
+          >
+            <h3 v-if="set.title">{{ set.title }}</h3>
+            <div
+              class="home__page--country__container--coins__set__container--coin__set--coins"
+            >
+              <span
+                v-for="(coin, coinIndex) in set.coins"
+                :key="coinIndex"
+              >
+                <Coin
+                  v-model:filter-selected="filterSelected"
+                  :coin="coin"
+                  :set="set"
+                  :country="country"
+                  @coin-selected="() => onCoinSelect(coin.id)"
+                />
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -104,6 +189,7 @@ const onCoinSelect = async (coinId: string) => {
     &--coins__set__container {
       @apply flex flex-col gap-3 pb-5;
       &--coin__set {
+        @apply relative;
         @apply flex flex-col gap-2;
         > h3 {
           font-family: "Urbanist", sans-serif;
@@ -112,6 +198,25 @@ const onCoinSelect = async (coinId: string) => {
           @apply tracking-widest;
           @apply text-masala-500;
           @apply px-5;
+        }
+        &::after,
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 8%; /* Adjust to control the width of the blurry overlay */
+          z-index: 1;
+        }
+        &::before {
+          left: 0;
+          right: auto;
+          background: linear-gradient(90deg, #f0f0f0, transparent);
+        }
+        &::after {
+          right: 0;
+          left: auto;
+          background: linear-gradient(90deg, transparent, #f0f0f0);
         }
         &--coins {
           @apply overflow-x-scroll px-5;

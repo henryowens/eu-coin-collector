@@ -15,4 +15,16 @@ export default createQueryKeys("coins", {
       },
     };
   },
+  details: (id: string) => {
+    const client = useSupabaseClient<Database>();
+
+    return {
+      queryKey: ["details", id],
+      queryFn: async () => {
+        const repsonse = await client.from("coins").select("*").eq("id", id);
+
+        return repsonse.data;
+      },
+    };
+  },
 });

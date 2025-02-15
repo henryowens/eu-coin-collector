@@ -7,12 +7,11 @@ import {
 
 import type { Database } from "~/types/database.types";
 
-type SupabaseCallback<CBArgs, D, E> = (
-  args: CBArgs,
-) => Promise<{ error: E; data: D }>;
+type SupabaseCallback<CBArgs, R> = (args: CBArgs) => Promise<R>;
 
+type SupabaseResponse = { data: any; error: any };
 const wrapSupabaseRequest =
-  <CBArgs, D, E>(cb: SupabaseCallback<CBArgs, D, E>) =>
+  <CBArgs, R extends SupabaseResponse>(cb: SupabaseCallback<CBArgs, R>) =>
   async (args: CBArgs) => {
     const { data, error } = await cb(args);
 
@@ -24,14 +23,17 @@ const wrapSupabaseRequest =
   };
 
 const useSupabaseMutation =
-  <CBArgs, D, E>(
+  <CBArgs, R extends SupabaseResponse>(
     cb: (
       supabase: ReturnType<typeof useSupabaseClient<Database>>,
-    ) => SupabaseCallback<CBArgs, D, E>,
+    ) => SupabaseCallback<CBArgs, R>,
     optionsCb?: (
       queryClient: QueryClient,
     ) => MaybeRef<
-      Omit<MutationObserverOptions<D, Error, CBArgs, unknown>, "mutationFn">
+      Omit<
+        MutationObserverOptions<R["data"], Error, CBArgs, unknown>,
+        "mutationFn"
+      >
     >,
   ) =>
   () => {

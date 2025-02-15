@@ -3,7 +3,7 @@ import DialogFooter from "~/components/ui/dialog/DialogFooter.vue";
 import PinInput from "~/components/ui/pin-input/PinInput.vue";
 import PinInputGroup from "~/components/ui/pin-input/PinInputGroup.vue";
 import PinInputInput from "~/components/ui/pin-input/PinInputInput.vue";
-import { useVerifyEmailMutation, useVerifyOtpMutation } from "~/queries/auth";
+import { useVerifyEmailMutation, useVerifyOtpMutation } from "~/mutations/auth";
 
 const props = defineProps<{
   email: string;
