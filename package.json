@@ -9,6 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint-fix": "eslint --ext \".js,.vue,.ts\" --fix .",
+    "lint": "eslint --ext \".js,.vue,.ts\" .",
     "type-check": "nuxt typecheck",
     "pre-commit": "pnpm lint-fix && pnpm type-check",
     "supabase": "supabase gen types --lang=typescript --project-id ytavscywezkcabzofwnc > types/database.types.ts"
