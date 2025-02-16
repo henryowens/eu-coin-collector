@@ -7,7 +7,10 @@ const user = useSupabaseUser();
 
 <template>
   <footer class="footer">
-    <div class="footer--logo">
+    <NuxtLink
+      class="footer--logo"
+      to="/"
+    >
       <svg
         class="w-7 h-auto"
         width="49"
@@ -26,7 +29,7 @@ const user = useSupabaseUser();
       </svg>
 
       <p>EU Coin Collector</p>
-    </div>
+    </NuxtLink>
 
     <div class="footer--sitemap">
       <Button @click="isCookieConsentDialogOpen = true">Cookie Consent</Button>

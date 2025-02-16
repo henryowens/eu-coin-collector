@@ -40,7 +40,54 @@ export default createQueryKeys("countries", {
       queryFn: () => getFullCountry(client),
     };
   },
+  byNormalisedName: (normalisedName: MaybeRef<string>) => {
+    const client = useSupabaseClient<Database>();
+
+    return {
+      queryKey: [unref(normalisedName)],
+      queryFn: async () => {
+        const { data, error } = await client
+          .from("countries")
+          .select(
+            "*, coin_sets:coin_sets(*, coins:coins(*, base_coin:base_coins(*)))",
+          )
+          .eq("normalised_name", unref(normalisedName))
+          .single();
+
+        if (error) throw error;
+
+        if (!data) throw new Error("No data found");
+
+        return data;
+      },
+    };
+  },
+  byCoin: (coinId: MaybeRef<string>) => {
+    const client = useSupabaseClient<Database>();
+
+    return {
+      queryKey: [unref(coinId)],
+      queryFn: async () => {
+        const { data, error } = await client
+          .from("coins")
+          .select(
+            "id, base_coin_id:base_coin_id(*), coin_set_id:coin_set_id(title, country_id:country_id(*))",
+          )
+          .eq("id", unref(coinId))
+          .single();
+
+        if (error) throw error;
+
+        if (!data) throw new Error("No data found");
+
+        return data;
+      },
+    };
+  },
 });
 
 type FullCountryList = Awaited<ReturnType<typeof getFullCountry>>;
 export type FullCountry = FullCountryList[number];
+
+export type FullCoinset = FullCountry["coin_sets"][number];
+export type FullCoin = FullCoinset["coins"][number];
