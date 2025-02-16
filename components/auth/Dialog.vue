@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const email = ref<string>();
 
@@ -19,6 +12,15 @@ defineProps<{
 }>();
 
 const user = useSupabaseUser();
+
+const userHasSeenIntro = ref(false);
+
+const progress = computed(() => {
+  if (user.value) return 100;
+  else if (!userHasSeenIntro.value) return 0;
+  else if (!email.value) return 33;
+  else if (!!email.value.length && !user.value) return 66;
+});
 </script>
 
 <template>
@@ -26,70 +28,37 @@ const user = useSupabaseUser();
     <DialogTrigger v-if="hasTrigger">
       <slot />
     </DialogTrigger>
-    <DialogContent class="dialog__content">
-      <TransitionSlideBetween class="flex-1 flex">
-        <div
-          v-if="user"
-          class="flex-1 flex flex-col gap-y-4"
-        >
-          <DialogHeader>
-            <DialogTitle>All Set!</DialogTitle>
-            <DialogDescription>
-              Continue to start your collection now.
-            </DialogDescription>
-          </DialogHeader>
-          <div class="flex flex-col h-full gap-y-4">
-            <div class="flex-1 flex items-center justify-center pb-16">
-              <Icon
-                name="ion:checkmark-circled"
-                size="150px"
-                class="text-green-600"
-              />
-            </div>
+    <DialogContent class="dialog__content pb-0 px-0 gap-0">
+      <div class="flex-1 flex flex-col px-6">
+        <TransitionSlideBetween class="flex-1 flex">
+          <AuthDialogContentFinish
+            v-if="user"
+            @close="() => (isOpen = false)"
+          />
+          <AuthDialogContentWelcome
+            v-else-if="!userHasSeenIntro"
+            @next="() => (userHasSeenIntro = true)"
+          />
+          <AuthDialogContentEmail
+            v-else-if="!email"
+            @email-submitted="(newEmail) => (email = newEmail)"
+          />
+          <AuthDialogContentPin
+            v-else
+            :email="email"
+            @change-email="() => (email = undefined)"
+          />
+        </TransitionSlideBetween>
+      </div>
 
-            <DialogFooter>
-              <Button
-                class="w-full"
-                size="lg"
-                @click="() => (isOpen = false)"
-              >
-                Continue
-              </Button>
-            </DialogFooter>
-          </div>
-        </div>
-        <div
-          v-else
-          class="flex-1 flex flex-col gap-y-4"
-        >
-          <DialogHeader>
-            <DialogTitle>Start Collecting Today</DialogTitle>
-            <DialogDescription>
-              To log in simply enter your email and you will recive a
-              confirmation code.
-            </DialogDescription>
-          </DialogHeader>
-
-          <TransitionFadeBetween class="flex-1">
-            <AuthDialogContentEmail
-              v-if="!email"
-              @email-submitted="(newEmail) => (email = newEmail)"
-            />
-            <AuthDialogContentPin
-              v-else
-              :email="email"
-              @change-email="() => (email = undefined)"
-            />
-          </TransitionFadeBetween>
-        </div>
-      </TransitionSlideBetween>
+      <Progress v-model="progress" />
     </DialogContent>
   </Dialog>
 </template>
 
 <style lang="scss">
 .dialog__content {
-  @apply sm:max-w-[500px] sm:max-h-[600px] w-full h-full flex flex-col;
+  @apply rounded-xl border-0 overflow-x-hidden  sm:max-w-[500px] sm:max-h-[600px] w-full h-full flex flex-col;
   row-gap: 2rem /* 32px */ !important;
 
   > button:last-child {

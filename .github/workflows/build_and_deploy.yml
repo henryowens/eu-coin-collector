@@ -30,15 +30,19 @@ jobs:
           pnpm i
           pnpm run generate
         env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NUXT_PUBLIC_ENV: "production"
 
-      # - name: Lint & Fix 🧹
-      #   run: |
-      #     pnpm run lint-fix
+      - name: Lint & Fix 🧹
+        run: |
+          pnpm run lint-fix
 
-      # - name: Type Check 🔎
-      #   run: |
-      #     pnpm run type-check
+      - name: Type Check 🔎
+        run: |
+          pnpm run type-check
 
       - name: Deploy to Netlify Production 🚀
         uses: nwtgck/actions-netlify@v1.2
@@ -78,22 +82,26 @@ jobs:
           pnpm i
           pnpm run generate
         env:
-          NUXT_PUBLIC_ENV: "staging"
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          NUXT_PUBLIC_ENV: "acceptance"
 
-      - name: Lint & Fix 🧹
-        run: |
-          pnpm run lint-fix
+      # - name: Lint & Fix 🧹
+      #   run: |
+      #     pnpm run lint-fix
 
-      - name: Type Check 🔎
-        run: |
-          pnpm run type-check
+      # - name: Type Check 🔎
+      #   run: |
+      #     pnpm run type-check
 
-      - name: Deploy to Netlify Staging 🚀
+      - name: Deploy to Netlify Acceptance 🚀
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: "dist"
-          production-branch: "acc"
-          alias: "acc" # This ensures deployment to acc.<domain>.com
+          publish-dir: ".output/public"
+          production-branch: "main" # Ensure this is set correctly for your production branch
+          alias: "acc" # Maps deployment to acc.eucoincollector.com
           deploy-message: "Deploy from GitHub Actions (acc branch)"
           enable-pull-request-comment: false
           enable-commit-comment: true
@@ -103,4 +111,4 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          NUXT_PUBLIC_ENV: "staging"
+          NUXT_PUBLIC_ENV: "acceptance"

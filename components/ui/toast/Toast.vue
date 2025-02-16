@@ -4,6 +4,7 @@ import {
   type ToastRootEmits,
   useForwardPropsEmits,
 } from "radix-vue";
+import { computed } from "vue";
 
 import { cn } from "@/lib/utils";
 
@@ -13,7 +14,12 @@ const props = defineProps<ToastProps>();
 
 const emit = defineEmits<ToastRootEmits>();
 
-const delegatedProps = useOmit(props, ["class"]);
+const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props;
+
+  return delegated;
+});
 
 const forwarded = useForwardPropsEmits(delegatedProps, emit);
 </script>

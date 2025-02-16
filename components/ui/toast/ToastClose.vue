@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { X } from "lucide-vue-next";
 import { ToastClose, type ToastCloseProps } from "radix-vue";
-import { type HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,12 @@ const props = defineProps<
   }
 >();
 
-const delegatedProps = useOmit(props, ["class"]);
+const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props;
+
+  return delegated;
+});
 </script>
 
 <template>
@@ -19,8 +24,7 @@ const delegatedProps = useOmit(props, ["class"]);
     v-bind="delegatedProps"
     :class="
       cn(
-        // 'absolute right-2 top-2 rounded-md p-1  opacity-0 transition-opacity text-secondary-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
-        'absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
+        'absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
         props.class,
       )
     "

@@ -1,26 +1,13 @@
 import { createQueryKeys } from "@lukemorales/query-key-factory";
-import { useMutation } from "@tanstack/vue-query";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
 
 import type { Database } from "~/types/database.types";
 
-const getSelectedCoinsList = async (
-  user: ReturnType<typeof useSupabaseUser>,
-  client: ReturnType<typeof useSupabaseClient<Database>>,
-) => {
-  if (!user.value || !user.value.id)
-    throw new Error("User not found for selected coins");
+import queries from ".";
 
-  const { data, error } = await client
-    .from("selected_coins")
-    .select("*")
-    .eq("user_id", user.value.id);
-
-  if (error) throw error;
-
-  return data;
-};
-
-export type SelectedCoinList = Awaited<ReturnType<typeof getSelectedCoinsList>>;
+export type SelectedCoinList = Awaited<
+  ReturnType<ReturnType<typeof queries.selectedCoins.list>["queryFn"]>
+>;
 
 export default createQueryKeys("selectedCoins", {
   list: () => {
@@ -29,7 +16,19 @@ export default createQueryKeys("selectedCoins", {
 
     return {
       queryKey: ["list"],
-      queryFn: () => getSelectedCoinsList(user, client),
+      queryFn: async () => {
+        if (!user.value || !user.value.id)
+          throw new Error("User not found for selected coins");
+
+        const { data, error } = await client
+          .from("selected_coins")
+          .select("*")
+          .eq("user_id", user.value.id);
+
+        if (error) throw error;
+
+        return data;
+      },
     };
   },
 });
@@ -37,6 +36,7 @@ export default createQueryKeys("selectedCoins", {
 export const useSelectCoin = () => {
   const client = useSupabaseClient<Database>();
   const user = useSupabaseUser();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (coinId: string) => {
@@ -75,6 +75,9 @@ export const useSelectCoin = () => {
 
         return data;
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queries.selectedCoins._def });
     },
   });
 };

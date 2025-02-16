@@ -31,9 +31,10 @@ watch(user, (newUser) => {
 </script>
 
 <template>
+  <LayoutEnvBanner />
   <NuxtLayout>
     <Toaster />
     <NuxtPage />
-    <CookieConsent />
+    <!-- <CookieConsent /> -->
   </NuxtLayout>
 </template>

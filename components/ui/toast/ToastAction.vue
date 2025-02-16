@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ToastAction, type ToastActionProps } from "radix-vue";
-import { type HTMLAttributes } from "vue";
+import { computed, type HTMLAttributes } from "vue";
 
 import { cn } from "@/lib/utils";
 
@@ -8,7 +8,12 @@ const props = defineProps<
   ToastActionProps & { class?: HTMLAttributes["class"] }
 >();
 
-const delegatedProps = useOmit(props, ["class"]);
+const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { class: _, ...delegated } = props;
+
+  return delegated;
+});
 </script>
 
 <template>

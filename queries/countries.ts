@@ -17,7 +17,18 @@ const getFullCountry = async (
 
   if (!repsonse.data) throw new Error("No data found");
 
-  return repsonse.data;
+  const countries = repsonse.data;
+
+  if (!countries) return [];
+
+  const countriesCopy = [...countries];
+
+  return countriesCopy.sort((a, b) => {
+    const nameA = a.name.toLowerCase();
+    const nameB = b.name.toLowerCase();
+
+    return nameA.localeCompare(nameB);
+  });
 };
 
 export default createQueryKeys("countries", {
