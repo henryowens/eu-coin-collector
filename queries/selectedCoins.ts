@@ -5,6 +5,10 @@ import type { Database } from "~/types/database.types";
 
 import queries from ".";
 
+export type SelectedCoinList = Awaited<
+  ReturnType<ReturnType<typeof queries.selectedCoins.list>["queryFn"]>
+>;
+
 export default createQueryKeys("selectedCoins", {
   list: () => {
     const client = useSupabaseClient<Database>();
@@ -28,10 +32,6 @@ export default createQueryKeys("selectedCoins", {
     };
   },
 });
-
-export type SelectedCoinList = Awaited<
-  ReturnType<ReturnType<typeof queries.selectedCoins.list>["queryFn"]>
->;
 
 export const useSelectCoin = () => {
   const client = useSupabaseClient<Database>();

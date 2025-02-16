@@ -11,6 +11,16 @@ import {
 const user = useSupabaseUser();
 
 const email = ref(user.value?.email);
+
+const userCollectionProgressData = useRealtimeSelectedCoinsProgress();
+
+const userCollectionProgress = computed(
+  () => userCollectionProgressData.value?.progress ?? 0,
+);
+
+const userCollectionProgressPercentage = computed(() =>
+  Math.round(userCollectionProgress.value),
+);
 </script>
 
 <template>
@@ -50,6 +60,26 @@ const email = ref(user.value?.email);
             {{ new Date(user.created_at).toLocaleDateString() }}
           </span>
         </p>
+      </div>
+      <hr />
+      <div class="flex flex-col gap-y-3">
+        <div class="flex justify-between items-center">
+          <h2>Collection Progress</h2>
+          <span
+            v-if="
+              userCollectionProgressData?.selectedCoinsTotal &&
+              userCollectionProgressData?.coinsTotal
+            "
+            class="text-sm text-slate-500"
+          >
+            {{ userCollectionProgressData.selectedCoinsTotal }} /
+            {{ userCollectionProgressData.coinsTotal }}
+            <span class="text-xs ml-1 text-slate-800">
+              ({{ userCollectionProgressPercentage }}%)
+            </span>
+          </span>
+        </div>
+        <Progress v-model="userCollectionProgress" />
       </div>
       <hr />
       <div class="flex flex-col gap-y-3">
