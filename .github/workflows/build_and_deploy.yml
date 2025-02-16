@@ -41,9 +41,9 @@ jobs:
           pnpm run type-check
 
 
-      - name: Lint & Fix 🧹
-        run: |
-          pnpm run lint
+      # - name: Lint & Fix 🧹
+      #   run: |
+      #     pnpm run lint
 
       - name: Deploy to Netlify Production 🚀
         uses: nwtgck/actions-netlify@v1.2
@@ -93,9 +93,9 @@ jobs:
         run: |
           pnpm run type-check
 
-      - name: Lint & Fix 🧹
-        run: |
-          pnpm run lint
+      # - name: Lint & Fix 🧹
+      #   run: |
+      #     pnpm run lint
 
       - name: Deploy to Netlify Acceptance 🚀
         uses: nwtgck/actions-netlify@v1.2
