@@ -1,23 +1,29 @@
 <script setup lang="ts">
-const isOpen = ref(true);
+import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 
 const { data: countries } = useCountries();
-
-const scrollToCountry = (normalizedName: string) => {
-  const country = document.getElementById(normalizedName);
-
-  if (!country || !("scrollIntoView" in country)) return;
-
-  country.scrollIntoView({ behavior: "smooth" });
-};
 </script>
 
 <template>
   <div
     class="w-full bg-masala-950 mb-0 sm:mb-3 p-2 flex justify-end px-4 sm:px-6"
   >
-    <NavigationMenu v-model:model-value="isOpen">
+    <NavigationMenu>
       <NavigationMenuList>
+        <NavigationMenuItem>
+          <NuxtLink to="/">
+            <NavigationMenuLink
+              :class="navigationMenuTriggerStyle()"
+              class="flex items-center"
+            >
+              <Icon
+                name="ion:home-sharp"
+                class="mr-2"
+              />
+              Home
+            </NavigationMenuLink>
+          </NuxtLink>
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger class="flex items-center">
             <Icon
@@ -33,21 +39,22 @@ const scrollToCountry = (normalizedName: string) => {
               <li
                 v-for="country in countries"
                 :key="country.id"
-                @click="() => scrollToCountry(country.normalised_name)"
               >
-                <NavigationMenuLink :as-child="true">
-                  <span
-                    class="cursor-pointer flex items-center gap-2 select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  >
-                    <Icon
-                      :name="`flag:${country.locale}-1x1`"
-                      class="w-[15px] h-[15px] rounded-full"
-                    />
-                    <div class="text-sm font-medium leading-none">
-                      {{ country.name }}
-                    </div>
-                  </span>
-                </NavigationMenuLink>
+                <NuxtLink :to="`/countries/${country.normalised_name}`">
+                  <NavigationMenuLink :as-child="true">
+                    <span
+                      class="cursor-pointer flex items-center gap-2 select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    >
+                      <Icon
+                        :name="`flag:${country.locale}-1x1`"
+                        class="w-[15px] h-[15px] rounded-full"
+                      />
+                      <div class="text-sm font-medium leading-none">
+                        {{ country.name }}
+                      </div>
+                    </span>
+                  </NavigationMenuLink>
+                </NuxtLink>
               </li>
             </ul>
           </NavigationMenuContent>

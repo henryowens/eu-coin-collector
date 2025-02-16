@@ -9,6 +9,10 @@ export type SelectedCoinList = Awaited<
   ReturnType<ReturnType<typeof queries.selectedCoins.list>["queryFn"]>
 >;
 
+enum SupabaseErrorCode {
+  EmptyRows = "PGRST116",
+}
+
 export default createQueryKeys("selectedCoins", {
   list: () => {
     const client = useSupabaseClient<Database>();
@@ -24,6 +28,33 @@ export default createQueryKeys("selectedCoins", {
           .from("selected_coins")
           .select("*")
           .eq("user_id", user.value.id);
+
+        if (error) throw error;
+
+        return data;
+      },
+    };
+  },
+  byId: (coinId: MaybeRef<string>) => {
+    const client = useSupabaseClient<Database>();
+    const user = useSupabaseUser();
+
+    return {
+      queryKey: ["byId", coinId],
+      queryFn: async () => {
+        if (!user.value || !user.value.id)
+          throw new Error(`User not found to select coin ${coinId}`);
+
+        const { data, error } = await client
+          .from("selected_coins")
+          .select("*")
+          .eq("coin_id", unref(coinId))
+          .eq("user_id", user.value.id)
+          .single();
+
+        console.log("errorcode", error);
+
+        if (error && error.code === SupabaseErrorCode.EmptyRows) return null;
 
         if (error) throw error;
 

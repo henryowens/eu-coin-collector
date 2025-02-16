@@ -2,10 +2,11 @@
 import { ContentLoader } from "vue-content-loader";
 
 import type { FullCountry } from "~/queries/countries";
+import type { Database } from "~/types/database.types";
 
 const props = defineProps<{
-  country: FullCountry;
-  set: FullCountry["coin_sets"][number];
+  country: Database["public"]["Tables"]["countries"]["Row"];
+  set: Database["public"]["Tables"]["coin_sets"]["Row"];
   coin: FullCountry["coin_sets"][number]["coins"][number];
 }>();
 
@@ -37,7 +38,6 @@ const isSelected = computed(() => {
 
 const router = useRouter();
 const onCoinView = () => {
-  console.log("Viewing coin", props.coin.id);
   router.push(`/countries/${props.country.slug}/${props.coin.id}`);
 };
 
@@ -49,8 +49,6 @@ const onAddRemoveCoinViaContextMenu = () => {
   if (isContextMenuOpen.value) {
     if (!user.value) isContextMenuOpen.value = false;
     emit("coin-selected");
-
-    console.log("contextMenu", isContextMenuOpen.value);
   }
 };
 

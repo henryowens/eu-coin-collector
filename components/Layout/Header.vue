@@ -22,7 +22,10 @@ const isLoginDialogOpen = ref(false);
 
 <template>
   <header class="header">
-    <div class="header--logo">
+    <NuxtLink
+      class="header--logo"
+      to="/"
+    >
       <svg
         width="49"
         height="43"
@@ -40,7 +43,7 @@ const isLoginDialogOpen = ref(false);
       </svg>
 
       <p>EU Coin Collector</p>
-    </div>
+    </NuxtLink>
     <AuthDialog
       :key="user?.id || 'unauthenticated'"
       v-model="isLoginDialogOpen"

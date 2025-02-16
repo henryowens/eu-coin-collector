@@ -36,13 +36,14 @@ jobs:
           NEXT_PUBLIC_SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NUXT_PUBLIC_ENV: "production"
 
-      - name: Lint & Fix 🧹
-        run: |
-          pnpm run lint-fix
-
       - name: Type Check 🔎
         run: |
           pnpm run type-check
+
+
+      # - name: Lint & Fix 🧹
+      #   run: |
+      #     pnpm run lint
 
       - name: Deploy to Netlify Production 🚀
         uses: nwtgck/actions-netlify@v1.2
@@ -88,13 +89,13 @@ jobs:
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
           NUXT_PUBLIC_ENV: "acceptance"
 
+      - name: Type Check 🔎
+        run: |
+          pnpm run type-check
+
       # - name: Lint & Fix 🧹
       #   run: |
-      #     pnpm run lint-fix
-
-      # - name: Type Check 🔎
-      #   run: |
-      #     pnpm run type-check
+      #     pnpm run lint
 
       - name: Deploy to Netlify Acceptance 🚀
         uses: nwtgck/actions-netlify@v1.2

@@ -1,13 +1,32 @@
 <script setup lang="ts">
+import { useQueryClient } from "@tanstack/vue-query";
+
+import queries from "~/queries";
+
 const isAuthDialogOpen = ref(false);
 const isCookieConsentDialogOpen = ref(false);
 
 const user = useSupabaseUser();
+const supabase = useSupabaseClient();
+
+const queryClient = useQueryClient();
+
+const onLogout = async () => {
+  await supabase.auth.signOut();
+  console.log("resettign queries");
+  queryClient.resetQueries({
+    queryKey: queries.selectedCoins.list._def,
+    exact: true,
+  });
+};
 </script>
 
 <template>
   <footer class="footer">
-    <div class="footer--logo">
+    <NuxtLink
+      class="footer--logo"
+      to="/"
+    >
       <svg
         class="w-7 h-auto"
         width="49"
@@ -26,12 +45,21 @@ const user = useSupabaseUser();
       </svg>
 
       <p>EU Coin Collector</p>
-    </div>
+    </NuxtLink>
 
     <div class="footer--sitemap">
       <Button @click="isCookieConsentDialogOpen = true">Cookie Consent</Button>
-      <Button @click="isAuthDialogOpen = true">
-        {{ user ? "Logout" : "Login" }}
+      <Button
+        v-if="user"
+        @click="() => onLogout()"
+      >
+        Logout
+      </Button>
+      <Button
+        v-else
+        @click="isAuthDialogOpen = true"
+      >
+        Login
       </Button>
     </div>
   </footer>
