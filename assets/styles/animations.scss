@@ -18,3 +18,16 @@
 .fade-leave {
     opacity: 1;
 }
+
+// Page Transition
+.page-enter-active,
+.page-leave-active {
+    @apply transition-all;
+    @apply duration-200;
+}
+
+.page-enter-from,
+.page-leave-to {
+    @apply opacity-0;
+    filter: blur(0.5rem);
+}
