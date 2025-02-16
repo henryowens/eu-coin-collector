@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { data: countries, suspense } = useCountries();
+const {
+  data: countries,
+  suspense,
+  isLoading: isCountriesLoading,
+} = useCountries();
 
 onServerPrefetch(async () => await suspense());
 
@@ -80,7 +84,10 @@ const countriesToDisplay = computed(() => {
         Filters
       </h2>
       <div class="flex items-center gap-4">
-        <Select v-model="filterSelected">
+        <Select
+          v-model="filterSelected"
+          :disabled="isCountriesLoading"
+        >
           <SelectTrigger>
             <SelectValue placeholder="Filter on selected coins" />
           </SelectTrigger>
@@ -93,48 +100,68 @@ const countriesToDisplay = computed(() => {
           </SelectContent>
         </Select>
 
-        <Button @click="filterSelected = undefined">Clear</Button>
+        <Button
+          :disabled="isCountriesLoading"
+          @click="filterSelected = undefined"
+        >
+          Clear
+        </Button>
       </div>
     </div>
     <hr />
-    <div class="transition-all duration-500 ease-in-out flex flex-col gap-y-4">
-      <div
-        v-for="(country, countryIndex) in countriesToDisplay"
-        :key="countryIndex"
-        class="home__page--country__container"
-      >
-        <NuxtLink
-          :to="`/countries/${country.normalised_name}`"
-          class="home__page--country__container--header"
-          :style="{
-            backgroundColor: country.background_color,
-          }"
+    <div class="transition-all duration-500 ease-in-out">
+      <TransitionFadeBetween>
+        <div
+          v-if="isCountriesLoading"
+          class="flex flex-col gap-3 pb-5"
         >
-          <Icon
-            :name="`flag:${country.locale}-1x1`"
-            class="w-[30px] h-[30px] rounded-full"
-          />
-          <h2
-            :class="
-              country.text_color === 'light'
-                ? 'text-masala-50'
-                : 'text-masala-900'
-            "
-          >
-            {{ country.name }}
-          </h2>
-        </NuxtLink>
-
-        <div class="home__page--country__container--coins__set__container">
-          <CoinSet
-            v-for="(set, setIndex) in country.coin_sets"
-            :key="setIndex"
-            v-model="filterSelected"
-            :set="set"
-            :country="country"
-          />
+          <Skeleton class="h-[260px] w-full" />
+          <Skeleton class="h-[260px] w-full" />
+          <Skeleton class="h-[260px] w-full" />
         </div>
-      </div>
+        <div
+          v-else
+          class="flex flex-col gap-y-4"
+        >
+          <div
+            v-for="(country, countryIndex) in countriesToDisplay"
+            :key="countryIndex"
+            class="home__page--country__container"
+          >
+            <NuxtLink
+              :to="`/countries/${country.normalised_name}`"
+              class="home__page--country__container--header"
+              :style="{
+                backgroundColor: country.background_color,
+              }"
+            >
+              <Icon
+                :name="`flag:${country.locale}-1x1`"
+                class="w-[30px] h-[30px] rounded-full"
+              />
+              <h2
+                :class="
+                  country.text_color === 'light'
+                    ? 'text-masala-50'
+                    : 'text-masala-900'
+                "
+              >
+                {{ country.name }}
+              </h2>
+            </NuxtLink>
+
+            <div class="home__page--country__container--coins__set__container">
+              <CoinSet
+                v-for="(set, setIndex) in country.coin_sets"
+                :key="setIndex"
+                v-model="filterSelected"
+                :set="set"
+                :country="country"
+              />
+            </div>
+          </div>
+        </div>
+      </TransitionFadeBetween>
     </div>
   </div>
 </template>
