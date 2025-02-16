@@ -100,11 +100,11 @@ const countriesToDisplay = computed(() => {
     <div class="transition-all duration-500 ease-in-out flex flex-col gap-y-4">
       <div
         v-for="(country, countryIndex) in countriesToDisplay"
-        :id="country.normalised_name"
         :key="countryIndex"
         class="home__page--country__container"
       >
-        <div
+        <NuxtLink
+          :to="`/countries/${country.normalised_name}`"
           class="home__page--country__container--header"
           :style="{
             backgroundColor: country.background_color,
@@ -123,7 +123,7 @@ const countriesToDisplay = computed(() => {
           >
             {{ country.name }}
           </h2>
-        </div>
+        </NuxtLink>
 
         <div class="home__page--country__container--coins__set__container">
           <CoinSet

@@ -17,7 +17,7 @@ const { data: country } = useQuery({
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto py-4 sm:py-8">
+  <div class="max-w-2xl mx-auto p-4 sm:py-8">
     <div v-if="country">
       <Breadcrumb class="mb-4 sm:mb-6">
         <BreadcrumbList>
@@ -43,7 +43,7 @@ const { data: country } = useQuery({
           class="w-[50px] h-[50px] rounded-full"
         />
         <h1
-          class="text-2xl tracking-wider font-bold text-masala-950"
+          class="text-2xl tracking-wider font-bold"
           :class="
             country.text_color === 'light'
               ? 'text-masala-50'

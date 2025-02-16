@@ -47,7 +47,7 @@ const onCoinSelect = async () => {
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto py-4 sm:py-8">
+  <div class="max-w-2xl mx-auto p-4 sm:py-8">
     <AuthDialog v-model="isAuthDialogOpen" />
     <div v-if="coin">
       <Breadcrumb class="mb-4 sm:mb-6">
@@ -83,7 +83,7 @@ const onCoinSelect = async () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <Card class="w-[400px] mx-auto">
+      <Card class="w-full max-w-[400px] mx-auto">
         <CardHeader class="flex flex-row justify-between gap-6">
           <div>
             <img :src="imageUrl" />
