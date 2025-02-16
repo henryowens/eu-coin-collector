@@ -1,6 +1,7 @@
 <template>
   <div class="default__layout">
     <LayoutHeader />
+    <LayoutNavigationMenu />
     <main class="min-h-dvh">
       <slot />
     </main>

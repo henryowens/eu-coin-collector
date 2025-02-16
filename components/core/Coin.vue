@@ -186,7 +186,8 @@ watch(isContextMenuOpen, () => contextMenuIndex.value++);
     @apply rounded-full h-[75px] w-[75px];
     @apply bg-green-600;
     @apply opacity-30;
-    @apply absolute z-10;
+    @apply absolute;
+    z-index: 1;
   }
 }
 </style>

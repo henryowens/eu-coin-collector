@@ -67,7 +67,7 @@ const isLoginDialogOpen = ref(false);
 .header {
   @apply bg-masala-900;
   @apply flex justify-between items-center;
-  @apply p-4 sm:p-6 mb-0 sm:mb-3;
+  @apply p-4 sm:p-6;
   &--logo {
     @apply flex justify-between items-center;
     @apply gap-2 sm:gap-3;

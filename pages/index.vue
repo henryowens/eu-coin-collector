@@ -20,23 +20,10 @@ const { data: selectedCoinsData } = useRealtimeSelectedCoins();
 
 const filterSelected = ref<"all" | "selected" | "unselected">();
 
-const sortedCountriesByName = computed(() => {
-  if (!countries.value) return [];
-
-  const countriesCopy = [...countries.value];
-
-  return countriesCopy.sort((a, b) => {
-    const nameA = a.name.toLowerCase();
-    const nameB = b.name.toLowerCase();
-
-    return nameA.localeCompare(nameB);
-  });
-});
-
 // I want to make this function again but if the coin set if empty then dont show it and then if all coin sets are empty then dont show the country
 const getSelectedCoins = (selected: boolean) =>
-  sortedCountriesByName.value
-    .map((country) => {
+  countries.value
+    ?.map((country) => {
       const countryCopy = { ...country };
 
       countryCopy.coin_sets = countryCopy.coin_sets.map((set) => {
@@ -69,7 +56,7 @@ const getSelectedCoins = (selected: boolean) =>
     .filter((country) => country.coin_sets.length > 0);
 
 const countriesToDisplay = computed(() => {
-  if (!selectedCoinsData.value) return sortedCountriesByName.value;
+  if (!selectedCoinsData.value) return countries.value;
 
   switch (filterSelected.value) {
     case "selected":
@@ -77,7 +64,7 @@ const countriesToDisplay = computed(() => {
     case "unselected":
       return getSelectedCoins(false);
     default:
-      return sortedCountriesByName.value;
+      return countries.value;
   }
 });
 </script>
@@ -99,7 +86,14 @@ const countriesToDisplay = computed(() => {
       <div class="h-[6px] rounded-[10px] w-full bg-masala-100" />
     </div>
     <div class="filters">
-      <div>
+      <h2 class="text-base text-masala-800 mb-2 flex items-center">
+        <Icon
+          name="ion:funnel"
+          class="mr-2"
+        />
+        Filters
+      </h2>
+      <div class="flex items-center gap-4">
         <Select v-model="filterSelected">
           <SelectTrigger>
             <SelectValue placeholder="Filter on selected coins" />
@@ -112,11 +106,15 @@ const countriesToDisplay = computed(() => {
             </SelectGroup>
           </SelectContent>
         </Select>
+
+        <Button @click="filterSelected = undefined">Clear</Button>
       </div>
     </div>
+    <hr />
     <div class="transition-all duration-500 ease-in-out">
       <div
         v-for="(country, countryIndex) in countriesToDisplay"
+        :id="country.normalised_name"
         :key="countryIndex"
         class="home__page--country__container"
       >
