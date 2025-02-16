@@ -15,15 +15,16 @@ const props = defineProps<
   NavigationMenuRootProps & { class?: HTMLAttributes["class"] }
 >();
 
-const emits = defineEmits<NavigationMenuRootEmits>();
+const emit = defineEmits<NavigationMenuRootEmits>();
 
 const delegatedProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { class: _, ...delegated } = props;
 
   return delegated;
 });
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const forwarded = useForwardPropsEmits(delegatedProps, emit);
 </script>
 
 <template>
