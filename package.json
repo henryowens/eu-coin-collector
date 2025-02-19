@@ -11,6 +11,8 @@
     "lint-fix": "eslint --ext \".js,.vue,.ts\" --fix .",
     "lint": "eslint --ext \".js,.vue,.ts\" .",
     "type-check": "nuxt typecheck",
+    "test": "vitest",
+    "test-coverage": "vitest run --coverage",
     "pre-commit": "pnpm lint-fix && pnpm type-check",
     "supabase": "supabase gen types --lang=typescript --project-id ytavscywezkcabzofwnc > types/database.types.ts"
   },
@@ -47,11 +49,14 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^3.15.4",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
     "@nuxtjs/tailwindcss": "6.13.1",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "@vitest/coverage-v8": "3.0.5",
+    "@vue/test-utils": "^2.4.6",
     "@vueuse/core": "^12.5.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
@@ -59,12 +64,15 @@
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "happy-dom": "^17.1.0",
+    "jsdom": "^26.0.0",
     "nuxt-gtag": "^2.1.0",
     "nuxt-lodash": "^2.5.3",
     "postcss": "^8.5.2",
     "sass": "^1.84.0",
     "supabase": "^2.12.1",
     "tailwindcss": "^3.4.17",
+    "vitest": "^3.0.5",
     "vue-tsc": "^2.2.0"
   }
 }

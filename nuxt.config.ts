@@ -1,3 +1,5 @@
+import { fileURLToPath } from "url";
+
 import { googleFonts, gtag, image, shadcn, supabase } from "./config";
 
 export default defineNuxtConfig({
@@ -17,7 +19,23 @@ export default defineNuxtConfig({
     ["@nuxtjs/supabase", supabase],
     "nuxt-lodash",
     "@vueuse/nuxt",
+    "@nuxt/test-utils/module",
   ],
+
+  build: {
+    transpile: ["@radix-vue"],
+  },
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        // types: ["vitest/globals"],
+      },
+      exclude: [
+        fileURLToPath(new URL("../shared/**/*.test.ts", import.meta.url)),
+        fileURLToPath(new URL("../shared/**/*.config.ts", import.meta.url)),
+      ],
+    },
+  },
 
   nitro: {
     prerender: {
