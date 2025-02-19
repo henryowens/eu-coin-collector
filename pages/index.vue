@@ -62,6 +62,8 @@ const countriesToDisplay = computed(() => {
 
 <template>
   <div class="home__page">
+    <FiltersSheet v-model="filterSelected" />
+
     <div class="flex flex-col w-fit">
       <h1
         class="text-3xl font-extrabold tracking-widest sm:racking-[8px] text-masala-900 pb-2"
@@ -75,40 +77,6 @@ const countriesToDisplay = computed(() => {
       </p>
       <div class="h-[6px] rounded-[10px] w-full bg-masala-100" />
     </div>
-    <div class="filters">
-      <h2 class="text-base text-masala-800 mb-2 flex items-center">
-        <Icon
-          name="ion:funnel"
-          class="mr-2"
-        />
-        Filters
-      </h2>
-      <div class="flex items-center gap-4">
-        <Select
-          v-model="filterSelected"
-          :disabled="isCountriesLoading"
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Filter on selected coins" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="selected">Selected</SelectItem>
-              <SelectItem value="unselected">Not Selected</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <Button
-          :disabled="isCountriesLoading"
-          @click="filterSelected = undefined"
-        >
-          Clear
-        </Button>
-      </div>
-    </div>
-    <hr />
     <div class="transition-all duration-500 ease-in-out">
       <TransitionFadeBetween>
         <div

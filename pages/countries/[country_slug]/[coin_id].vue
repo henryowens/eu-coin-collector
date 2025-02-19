@@ -62,6 +62,9 @@ const showSkeleton = computed(() => !coin.value || isCoinLoading.value);
           class="mb-4 sm:mb-6"
         >
           <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink to="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
             <BreadcrumbSeparator>
               <Slash />
             </BreadcrumbSeparator>

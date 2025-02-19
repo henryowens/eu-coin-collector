@@ -31,6 +31,9 @@ const showSkeleton = computed(() => !country.value || isCountryLoading.value);
           class="mb-4 sm:mb-6"
         >
           <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink to="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
             <BreadcrumbSeparator>
               <Slash />
             </BreadcrumbSeparator>
